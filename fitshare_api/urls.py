@@ -9,5 +9,6 @@ def home_view(request):
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home_view, name='home'),  # Root URL will now display "Welcome to the FitShare API!"
-    path('profiles/', include('profiles.urls')),
+    path('profiles/', include('profiles.urls')),  # Include profile URLs
+    path('api-auth/', include('rest_framework.urls')),  # Added for login/logout in browsable API
 ]
