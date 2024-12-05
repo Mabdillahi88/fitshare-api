@@ -17,15 +17,16 @@ ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '8000-mabdillahi8-fitshareapi-pgokybq
 
 # Application definition
 INSTALLED_APPS = [
-    'cloudinary_storage',  # Added for Cloudinary storage
-    'django.contrib.staticfiles',  # Must be placed between cloudinary_storage and cloudinary
-    'cloudinary',  # Added for Cloudinary
+    'cloudinary_storage',
+    'django.contrib.staticfiles',
+    'cloudinary',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'profiles',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
