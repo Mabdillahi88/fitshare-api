@@ -1,6 +1,8 @@
 from rest_framework import serializers
 from .models import Post
+from PIL import Image
 
+# Post Serializer for listing and creating posts
 class PostSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.username')
     is_owner = serializers.SerializerMethodField()
@@ -26,21 +28,30 @@ class PostSerializer(serializers.ModelSerializer):
         request = self.context.get('request')
         return request and request.user == obj.owner
 
-    def validate_image(self, value):
-        """
-        Validates the uploaded image size, width, and height.
-        """
-        max_size = 2 * 1024 * 1024  # 2MB
-        max_width = 4096
-        max_height = 4096
+def validate_image(self, value):
+    """
+    Validates the uploaded image size, width, and height.
+    """
+    max_size = 2 * 1024 * 1024  # 2MB
+    max_width = 4096
+    max_height = 4096
 
-        if value.size > max_size:
-            raise serializers.ValidationError("Image file too large. Size should not exceed 2 MB.")
-        
-        if value.width > max_width:
-            raise serializers.ValidationError("Image width should not exceed 4096 pixels.")
-        
-        if value.height > max_height:
-            raise serializers.ValidationError("Image height should not exceed 4096 pixels.")
+    # Check file size
+    if value.size > max_size:
+        raise serializers.ValidationError("Image file too large. Size should not exceed 2 MB.")
 
-        return value
+    # Use Pillow to open the image and check dimensions
+    try:
+        image = Image.open(value)
+        if image.width > max_width or image.height > max_height:
+            raise serializers.ValidationError("Image dimensions should not exceed 4096x4096 pixels.")
+    except Exception as e:
+        raise serializers.ValidationError("Invalid image file.")
+
+    return value
+
+# PostDetailSerializer for retrieving, updating, and deleting posts
+class PostDetailSerializer(PostSerializer):
+    class Meta:
+        model = Post
+        fields = PostSerializer.Meta.fields
