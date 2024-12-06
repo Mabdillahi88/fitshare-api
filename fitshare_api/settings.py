@@ -26,6 +26,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'profiles',
+    'posts',
     'rest_framework',
 ]
 
