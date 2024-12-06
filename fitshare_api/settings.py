@@ -26,7 +26,7 @@ CSRF_TRUSTED_ORIGINS = [
     'https://8000-mabdillahi8-fitshareapi-ageqqbs7o91.ws.codeinstitute-ide.net'
 ]
 
-# Application definition
+
 INSTALLED_APPS = [
     'cloudinary_storage',
     'django.contrib.staticfiles',
@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'profiles',
     'posts',
+    'comments',  
     'rest_framework',
 ]
 

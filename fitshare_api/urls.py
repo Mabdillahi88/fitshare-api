@@ -12,5 +12,6 @@ urlpatterns = [
     path('', home_view, name='home'),  # Root URL will now display "Welcome to the FitShare API!"
     path('profiles/', include('profiles.urls')),  # Include profile URLs
     path('posts/', include('posts.urls')),  # Include posts URLs
+    path('comments/', include('comments.urls')),  # Include comments URLs
     path('api-auth/', include('rest_framework.urls')),  # Added for login/logout in browsable API
 ]
