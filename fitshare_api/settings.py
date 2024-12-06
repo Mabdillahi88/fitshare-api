@@ -13,7 +13,18 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '8000-mabdillahi8-fitshareapi-pgokybq6ph3.ws.codeinstitute-ide.net']
+ALLOWED_HOSTS = [
+    '127.0.0.1',
+    'localhost',
+    '8000-mabdillahi8-fitshareapi-pgokybq6ph3.ws.codeinstitute-ide.net',
+    '8000-mabdillahi8-fitshareapi-ageqqbs7o91.ws.codeinstitute-ide.net'
+]
+
+# CSRF Trusted Origins
+CSRF_TRUSTED_ORIGINS = [
+    'https://8000-mabdillahi8-fitshareapi-pgokybq6ph3.ws.codeinstitute-ide.net',
+    'https://8000-mabdillahi8-fitshareapi-ageqqbs7o91.ws.codeinstitute-ide.net'
+]
 
 # Application definition
 INSTALLED_APPS = [
