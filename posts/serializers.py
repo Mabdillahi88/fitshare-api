@@ -9,7 +9,11 @@ class PostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ['id', 'owner', 'created_at', 'updated_at', 'title', 'content', 'image', 'is_owner', 'profile_id', 'profile_image']
+        fields = [
+            'id', 'owner', 'created_at', 'updated_at', 'title',
+            'content', 'image', 'image_filter', 'is_owner',
+            'profile_id', 'profile_image'
+        ]
 
     def get_is_owner(self, obj):
         request = self.context.get('request')
