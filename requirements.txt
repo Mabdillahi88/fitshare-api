@@ -1,9 +1,12 @@
-Django>=3.2
-djangorestframework>=3.12.4
-django-cloudinary-storage>=0.3.0
-cloudinary>=1.24.0
-Pillow>=8.0.0  # For handling image uploads
-gunicorn  # For deploying the app
-psycopg2-binary  # If you're using PostgreSQL as your database
-dj-database-url>=0.5.0  # If you're configuring the database through environment variables
-whitenoise>=5.2.0  # For serving static files
+asgiref==3.8.1
+cloudinary==1.41.0
+dj-database-url==2.3.0
+Django==5.1.4
+django-cloudinary-storage==0.3.0
+django-filter==24.3
+djangorestframework==3.15.2
+gunicorn==23.0.0
+pillow==11.0.0
+psycopg2-binary==2.9.10
+sqlparse==0.5.2
+whitenoise==6.8.2

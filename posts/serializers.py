@@ -8,21 +8,17 @@ class PostSerializer(serializers.ModelSerializer):
     is_owner = serializers.SerializerMethodField()
     profile_id = serializers.ReadOnlyField(source='owner.profile.id')
     profile_image = serializers.ReadOnlyField(source='owner.profile.image.url')
-    image_filter = serializers.ChoiceField(choices=[
-        ('_1977', '1977'), ('brannan', 'Brannan'), ('earlybird', 'Earlybird'),
-        ('hudson', 'Hudson'), ('inkwell', 'Inkwell'), ('lofi', 'Lo-Fi'),
-        ('kelvin', 'Kelvin'), ('normal', 'Normal'), ('nashville', 'Nashville'),
-        ('rise', 'Rise'), ('toaster', 'Toaster'), ('valencia', 'Valencia'),
-        ('walden', 'Walden'), ('xpro2', 'X-pro II')
-    ], default='normal')
+    image_filter = serializers.ChoiceField(choices=[...])
     like_id = serializers.SerializerMethodField()
+    comments_count = serializers.ReadOnlyField()
+    likes_count = serializers.ReadOnlyField()
 
     class Meta:
         model = Post
         fields = [
-            'id', 'owner', 'created_at', 'updated_at', 'title',
-            'content', 'image', 'image_filter', 'is_owner',
-            'profile_id', 'profile_image', 'like_id'
+            'id', 'owner', 'created_at', 'updated_at', 'title', 'content', 'image',
+            'image_filter', 'is_owner', 'profile_id', 'profile_image', 'like_id',
+            'comments_count', 'likes_count'
         ]
 
     def get_is_owner(self, obj):
@@ -35,6 +31,7 @@ class PostSerializer(serializers.ModelSerializer):
             like = Like.objects.filter(owner=request.user, post=obj).first()
             return like.id if like else None
         return None
+
 
     def validate_image(self, value):
         """
