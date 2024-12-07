@@ -13,5 +13,6 @@ urlpatterns = [
     path('posts/', include('posts.urls')),  # Include posts URLs
     path('comments/', include('comments.urls')),  # Include comments URLs
     path('likes/', include('likes.urls')),  # Include likes URLs
+    path('followers/', include('followers.urls')),  # Include followers URLs
     path('api-auth/', include('rest_framework.urls')),  # Added for login/logout in browsable API
 ]
