@@ -1,8 +1,8 @@
 from rest_framework import serializers
 from .models import Post
+from likes.models import Like
 from PIL import Image
 
-# Post Serializer for listing and creating posts
 class PostSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.username')
     is_owner = serializers.SerializerMethodField()
@@ -15,40 +15,48 @@ class PostSerializer(serializers.ModelSerializer):
         ('rise', 'Rise'), ('toaster', 'Toaster'), ('valencia', 'Valencia'),
         ('walden', 'Walden'), ('xpro2', 'X-pro II')
     ], default='normal')
+    like_id = serializers.SerializerMethodField()
 
     class Meta:
         model = Post
         fields = [
             'id', 'owner', 'created_at', 'updated_at', 'title',
             'content', 'image', 'image_filter', 'is_owner',
-            'profile_id', 'profile_image'
+            'profile_id', 'profile_image', 'like_id'
         ]
 
     def get_is_owner(self, obj):
         request = self.context.get('request')
         return request and request.user == obj.owner
 
-def validate_image(self, value):
-    """
-    Validates the uploaded image size, width, and height.
-    """
-    max_size = 2 * 1024 * 1024  # 2MB
-    max_width = 4096
-    max_height = 4096
+    def get_like_id(self, obj):
+        request = self.context.get('request')
+        if request and request.user.is_authenticated:
+            like = Like.objects.filter(owner=request.user, post=obj).first()
+            return like.id if like else None
+        return None
 
-    # Check file size
-    if value.size > max_size:
-        raise serializers.ValidationError("Image file too large. Size should not exceed 2 MB.")
+    def validate_image(self, value):
+        """
+        Validates the uploaded image size, width, and height.
+        """
+        max_size = 2 * 1024 * 1024  # 2MB
+        max_width = 4096
+        max_height = 4096
 
-    # Use Pillow to open the image and check dimensions
-    try:
-        image = Image.open(value)
-        if image.width > max_width or image.height > max_height:
-            raise serializers.ValidationError("Image dimensions should not exceed 4096x4096 pixels.")
-    except Exception as e:
-        raise serializers.ValidationError("Invalid image file.")
+        # Check file size
+        if value.size > max_size:
+            raise serializers.ValidationError("Image file too large. Size should not exceed 2 MB.")
 
-    return value
+        # Use Pillow to open the image and check dimensions
+        try:
+            image = Image.open(value)
+            if image.width > max_width or image.height > max_height:
+                raise serializers.ValidationError("Image dimensions should not exceed 4096x4096 pixels.")
+        except Exception as e:
+            raise serializers.ValidationError("Invalid image file.")
+
+        return value
 
 # PostDetailSerializer for retrieving, updating, and deleting posts
 class PostDetailSerializer(PostSerializer):
