@@ -1,10 +1,8 @@
 from rest_framework import generics, permissions, filters
 from django.db.models import Count
+from django_filters.rest_framework import DjangoFilterBackend
 from .models import Post
 from .serializers import PostSerializer
-from django_filters.rest_framework import DjangoFilterBackend
-
-
 
 
 class PostList(generics.ListAPIView):
@@ -18,12 +16,22 @@ class PostList(generics.ListAPIView):
     ordering_fields = ['comments_count', 'likes_count', 'likes__created_at']
     search_fields = ['owner__username', 'title']
     filterset_fields = [
-        'owner__profile',  # Filter by posts owned by a user
-        'likes__owner__profile',  # Filter by posts liked by a user
-        'owner__profile__following__followed__profile',  # Filter by posts by users a profile follows
+        'owner__profile',  # Posts created by a specific profile
+        'likes__owner__profile',  # Posts liked by a specific profile
     ]
 
-
+    def filter_queryset(self, queryset):
+        """
+        Adds additional filtering for posts created by profiles
+        followed by a specific profile (profile_following query parameter).
+        """
+        queryset = super().filter_queryset(queryset)
+        profile_id = self.request.query_params.get('profile_following')
+        if profile_id:
+            queryset = queryset.filter(
+                owner__profile__followers__owner__profile=profile_id
+            )
+        return queryset
 
 
 class PostDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -33,5 +41,3 @@ class PostDetail(generics.RetrieveUpdateDestroyAPIView):
     ).order_by('-created_at')
     serializer_class = PostSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-
-
