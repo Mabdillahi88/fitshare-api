@@ -12,19 +12,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = 'DEV' in os.environ  # Set DEBUG to True only in development
 
 ALLOWED_HOSTS = [
-    '127.0.0.1',
     'localhost',
-    '8000-mabdillahi8-fitshareapi-pgokybq6ph3.ws.codeinstitute-ide.net',
-    '8000-mabdillahi8-fitshareapi-ageqqbs7o91.ws.codeinstitute-ide.net'
+    '127.0.0.1',
+    'fitshareapi-b9588b2c11b9.herokuapp.com',  # Heroku app URL
 ]
 
 # CSRF Trusted Origins
 CSRF_TRUSTED_ORIGINS = [
-    'https://8000-mabdillahi8-fitshareapi-pgokybq6ph3.ws.codeinstitute-ide.net',
-    'https://8000-mabdillahi8-fitshareapi-ageqqbs7o91.ws.codeinstitute-ide.net'
+    'https://fitshareapi-b9588b2c11b9.herokuapp.com',  # Heroku app URL
 ]
 
 INSTALLED_APPS = [
@@ -36,9 +34,10 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'corsheaders',  # Added for handling CORS
     'profiles',
     'posts',
-    'comments',  
+    'comments',
     'likes',
     'followers',
     'rest_framework',
@@ -52,6 +51,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',  # Added CORS middleware at the top
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -120,6 +120,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
+STATIC_ROOT = BASE_DIR / 'staticfiles'  # For Heroku
 
 # Media files
 MEDIA_URL = '/media/'
@@ -143,9 +144,21 @@ REST_FRAMEWORK = {
 # DJ Rest Auth and Allauth Configuration
 SITE_ID = 1
 REST_USE_JWT = True
-JWT_AUTH_COOKIE = 'access_token'
-JWT_AUTH_REFRESH_COOKIE = 'refresh_token'
-JWT_AUTH_SECURE = False
+JWT_AUTH_COOKIE = 'my-app-auth'
+JWT_AUTH_REFRESH_COOKIE = 'my-refresh-token'
+JWT_AUTH_SAMESITE = 'None'
+
+# CORS configuration
+if 'CLIENT_ORIGIN' in os.environ:
+    CORS_ALLOWED_ORIGINS = [
+        os.environ.get('CLIENT_ORIGIN')
+    ]
+else:
+    CORS_ALLOWED_ORIGIN_REGEXES = [
+        r"^https:\/\/.*\.codeinstitute-ide\.net$",
+    ]
+
+CORS_ALLOW_CREDENTIALS = True
 
 # Allauth email configurations
 ACCOUNT_EMAIL_VERIFICATION = 'none'
