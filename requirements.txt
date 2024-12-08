@@ -10,3 +10,6 @@ pillow==11.0.0
 psycopg2-binary==2.9.10
 sqlparse==0.5.2
 whitenoise==6.8.2
+dj-rest-auth==2.1.9
+djangorestframework-simplejwt
+

@@ -26,7 +26,6 @@ CSRF_TRUSTED_ORIGINS = [
     'https://8000-mabdillahi8-fitshareapi-ageqqbs7o91.ws.codeinstitute-ide.net'
 ]
 
-
 INSTALLED_APPS = [
     'cloudinary_storage',
     'django.contrib.staticfiles',
@@ -43,6 +42,12 @@ INSTALLED_APPS = [
     'followers',
     'rest_framework',
     'django_filters',
+    'rest_framework_simplejwt',
+    'dj_rest_auth',  # Added for authentication endpoints
+    'allauth',  # Added for registration and social account support
+    'allauth.account',
+    'allauth.socialaccount',
+    'dj_rest_auth.registration',  # Added for user registration
 ]
 
 MIDDLEWARE = [
@@ -65,7 +70,7 @@ TEMPLATES = [
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
-                'django.template.context_processors.request',
+                'django.template.context_processors.request',  # Required by allauth
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
@@ -121,3 +126,22 @@ DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# REST framework configuration
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+}
+
+# DJ Rest Auth and Allauth Configuration
+SITE_ID = 1  # Required for allauth
+REST_USE_JWT = True  # Enables JWT for dj-rest-auth
+JWT_AUTH_COOKIE = 'access_token'
+JWT_AUTH_REFRESH_COOKIE = 'refresh_token'
+JWT_AUTH_SECURE = False  # Set to True for production with HTTPS
+
+# Added for Allauth email configurations
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+ACCOUNT_AUTHENTICATION_METHOD = 'username'
+ACCOUNT_EMAIL_REQUIRED = False

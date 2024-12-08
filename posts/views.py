@@ -4,14 +4,13 @@ from django_filters.rest_framework import DjangoFilterBackend
 from .models import Post
 from .serializers import PostSerializer
 
-
 class PostList(generics.ListAPIView):
     queryset = Post.objects.annotate(
         comments_count=Count('comments', distinct=True),
         likes_count=Count('likes', distinct=True)
     ).order_by('-created_at')
     serializer_class = PostSerializer
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [permissions.IsAuthenticated]
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter, filters.SearchFilter]
     ordering_fields = ['comments_count', 'likes_count', 'likes__created_at']
     search_fields = ['owner__username', 'title']
@@ -32,7 +31,6 @@ class PostList(generics.ListAPIView):
                 owner__profile__followers__owner__profile=profile_id
             )
         return queryset
-
 
 class PostDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Post.objects.annotate(
