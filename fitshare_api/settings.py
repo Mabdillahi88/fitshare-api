@@ -14,13 +14,16 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = 'DEV' in os.environ  # Set DEBUG to True only in development
 
+# Allowed Hosts Configuration
 ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
     'fitshareapi-b9588b2c11b9.herokuapp.com',  # Heroku app URL
+    '8000-mabdillahi8-fitshareapi-ageqqbs7o91.ws.codeinstitute-ide.net',  # Gitpod URL
 ]
 
-# CSRF Trusted Origins
+
+# CSRF Trusted Origins Configuration
 CSRF_TRUSTED_ORIGINS = [
     'https://fitshareapi-b9588b2c11b9.herokuapp.com',  # Heroku app URL
 ]
