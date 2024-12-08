@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+import dj_database_url  # Added for PostgreSQL configuration
 
 if os.path.exists('env.py'):
     import env
@@ -43,11 +44,11 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_filters',
     'rest_framework_simplejwt',
-    'dj_rest_auth',  # Added for authentication endpoints
-    'allauth',  # Added for registration and social account support
+    'dj_rest_auth',
+    'allauth',
     'allauth.account',
     'allauth.socialaccount',
-    'dj_rest_auth.registration',  # Added for user registration
+    'dj_rest_auth.registration',
 ]
 
 MIDDLEWARE = [
@@ -80,13 +81,18 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'fitshare_api.wsgi.application'
 
-# Database
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+# Database configuration
+if 'DEV' in os.environ:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': dj_database_url.parse(os.environ.get("DATABASE_URL"))
+    }
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
@@ -135,13 +141,13 @@ REST_FRAMEWORK = {
 }
 
 # DJ Rest Auth and Allauth Configuration
-SITE_ID = 1  # Required for allauth
-REST_USE_JWT = True  # Enables JWT for dj-rest-auth
+SITE_ID = 1
+REST_USE_JWT = True
 JWT_AUTH_COOKIE = 'access_token'
 JWT_AUTH_REFRESH_COOKIE = 'refresh_token'
-JWT_AUTH_SECURE = False  # Set to True for production with HTTPS
+JWT_AUTH_SECURE = False
 
-# Added for Allauth email configurations
+# Allauth email configurations
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 ACCOUNT_AUTHENTICATION_METHOD = 'username'
 ACCOUNT_EMAIL_REQUIRED = False
