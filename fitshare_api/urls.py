@@ -1,11 +1,12 @@
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-from fitshare_api.views import root_route  # Importing root_route for the root URL
+from fitshare_api.views import root_route, logout_view  # Imported root_route and logout_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),  # Admin site URL
     path('', root_route, name='root'),  # Root URL for the API
+    path('logout/', logout_view, name='logout'),  # Added custom logout route
     path('profiles/', include('profiles.urls')),  # Profile-related URLs
     path('posts/', include('posts.urls')),  # Post-related URLs
     path('comments/', include('comments.urls')),  # Comment-related URLs
