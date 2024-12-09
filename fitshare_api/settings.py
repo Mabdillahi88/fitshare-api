@@ -22,10 +22,10 @@ ALLOWED_HOSTS = [
     '8000-mabdillahi8-fitshareapi-ageqqbs7o91.ws.codeinstitute-ide.net',  # Gitpod URL
 ]
 
-
 # CSRF Trusted Origins Configuration
 CSRF_TRUSTED_ORIGINS = [
     'https://fitshareapi-b9588b2c11b9.herokuapp.com',  # Heroku app URL
+    'https://*.codeinstitute-ide.net',  # Include wildcard for Gitpod
 ]
 
 INSTALLED_APPS = [
@@ -127,12 +127,12 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'  # For Heroku
 
 # Media files
 MEDIA_URL = '/media/'
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # Cloudinary configuration
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': os.getenv('CLOUDINARY_URL').split('@')[-1],
 }
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
@@ -156,6 +156,10 @@ if 'CLIENT_ORIGIN' in os.environ:
     CORS_ALLOWED_ORIGINS = [
         os.environ.get('CLIENT_ORIGIN')
     ]
+elif 'CLIENT_ORIGIN_DEV' in os.environ:
+    CORS_ALLOWED_ORIGIN_REGEXES = [
+        rf"{os.environ.get('CLIENT_ORIGIN_DEV')}",
+    ]
 else:
     CORS_ALLOWED_ORIGIN_REGEXES = [
         r"^https:\/\/.*\.codeinstitute-ide\.net$",
@@ -167,3 +171,4 @@ CORS_ALLOW_CREDENTIALS = True
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 ACCOUNT_AUTHENTICATION_METHOD = 'username'
 ACCOUNT_EMAIL_REQUIRED = False
+
