@@ -1,6 +1,7 @@
 import os
 from pathlib import Path
 import dj_database_url  # Added for PostgreSQL configuration
+import re  # Required for regex operations
 
 if os.path.exists('env.py'):
     import env
@@ -16,15 +17,14 @@ DEBUG = 'DEV' in os.environ  # Set DEBUG to True only in development
 
 # Allowed Hosts Configuration
 ALLOWED_HOSTS = [
+    os.environ.get('ALLOWED_HOST'),  # Environment variable for ALLOWED_HOST
     'localhost',
     '127.0.0.1',
-    'fitshareapi-b9588b2c11b9.herokuapp.com',  # Heroku app URL
-    '8000-mabdillahi8-fitshareapi-ageqqbs7o91.ws.codeinstitute-ide.net',  # Gitpod URL
 ]
 
 # CSRF Trusted Origins Configuration
 CSRF_TRUSTED_ORIGINS = [
-    'https://fitshareapi-b9588b2c11b9.herokuapp.com',  # Heroku app URL
+    f"https://{os.environ.get('ALLOWED_HOST')}",  # Dynamic trusted origin
     'https://*.codeinstitute-ide.net',  # Include wildcard for Gitpod
 ]
 
@@ -158,7 +158,7 @@ if 'CLIENT_ORIGIN' in os.environ:
     ]
 elif 'CLIENT_ORIGIN_DEV' in os.environ:
     CORS_ALLOWED_ORIGIN_REGEXES = [
-        rf"{os.environ.get('CLIENT_ORIGIN_DEV')}",
+        rf"^{re.escape(os.environ.get('CLIENT_ORIGIN_DEV'))}$",
     ]
 else:
     CORS_ALLOWED_ORIGIN_REGEXES = [
@@ -171,4 +171,3 @@ CORS_ALLOW_CREDENTIALS = True
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 ACCOUNT_AUTHENTICATION_METHOD = 'username'
 ACCOUNT_EMAIL_REQUIRED = False
-
