@@ -15,11 +15,11 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = 'DEV' in os.environ  # Set DEBUG to True only in development
 
-# Allowed Hosts Configuration
 ALLOWED_HOSTS = [
-    os.environ.get('ALLOWED_HOST'),  # Environment variable for ALLOWED_HOST
-    'localhost',
-    '127.0.0.1',
+    os.environ.get('ALLOWED_HOST'),  # Existing environment variable
+    'localhost',  # Local development
+    '127.0.0.1',  # Local development
+    '8000-mabdillahi8-fitshareapi-ageqqbs7o91.ws.codeinstitute-ide.net',  # Gitpod workspace URL
 ]
 
 # CSRF Trusted Origins Configuration
@@ -122,7 +122,6 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'  # For Heroku
 
 # Media files
@@ -152,18 +151,10 @@ JWT_AUTH_REFRESH_COOKIE = 'my-refresh-token'
 JWT_AUTH_SAMESITE = 'None'
 
 # CORS configuration
-if 'CLIENT_ORIGIN' in os.environ:
-    CORS_ALLOWED_ORIGINS = [
-        os.environ.get('CLIENT_ORIGIN')
-    ]
-elif 'CLIENT_ORIGIN_DEV' in os.environ:
-    CORS_ALLOWED_ORIGIN_REGEXES = [
-        rf"^{re.escape(os.environ.get('CLIENT_ORIGIN_DEV'))}$",
-    ]
-else:
-    CORS_ALLOWED_ORIGIN_REGEXES = [
-        r"^https:\/\/.*\.codeinstitute-ide\.net$",
-    ]
+CORS_ALLOWED_ORIGINS = [
+    "https://fitshare-d428ae7f1a9f.herokuapp.com",  # Deployed React app
+    "https://3000-mabdillahi88-fitshare-yf826mfdqxj.ws.codeinstitute-ide.net",  # Gitpod workspace
+]
 
 CORS_ALLOW_CREDENTIALS = True
 
