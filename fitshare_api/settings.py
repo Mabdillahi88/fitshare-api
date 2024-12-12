@@ -151,14 +151,11 @@ JWT_AUTH_REFRESH_COOKIE = 'my-refresh-token'
 JWT_AUTH_SAMESITE = 'None'
 
 # CORS configuration
-CORS_ALLOWED_ORIGINS = [
-    "https://fitshare-d428ae7f1a9f.herokuapp.com",  # Deployed React app
-    "https://3000-mabdillahi88-fitshare-yf826mfdqxj.ws.codeinstitute-ide.net",  # Gitpod workspace
-]
-
-CORS_ALLOW_CREDENTIALS = True
-
-# Allauth email configurations
-ACCOUNT_EMAIL_VERIFICATION = 'none'
-ACCOUNT_AUTHENTICATION_METHOD = 'username'
-ACCOUNT_EMAIL_REQUIRED = False
+if 'CLIENT_ORIGIN' in os.environ:
+    CORS_ALLOWED_ORIGINS = [
+        os.environ.get('CLIENT_ORIGIN')
+    ]
+if 'CLIENT_ORIGIN_DEV' in os.environ:
+    CORS_ALLOWED_ORIGIN_REGEXES = [
+        r"^https://.*\.codeinstitute-ide\.net$",
+    ]
