@@ -1,6 +1,7 @@
 import os
 from pathlib import Path
 import dj_database_url
+from corsheaders.defaults import default_headers
 
 if os.path.exists('env.py'):
     import env
@@ -12,6 +13,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('SECRET_KEY')
 DEBUG = 'DEV' in os.environ
 
+# Hosts and dynamic Gitpod workspace handling
 ALLOWED_HOSTS = [
     os.environ.get('ALLOWED_HOST'),
     'localhost',
@@ -19,11 +21,9 @@ ALLOWED_HOSTS = [
     'fitshare-d428ae7f1a9.herokuapp.com',
 ]
 
-# Dynamically handle Gitpod workspace hosts
 if 'GITPOD_WORKSPACE_URL' in os.environ:
     gitpod_url = os.environ['GITPOD_WORKSPACE_URL']
-    host = gitpod_url.replace('https://', '8000-')
-    ALLOWED_HOSTS.append(host)
+    ALLOWED_HOSTS.append(gitpod_url.replace('https://', '8000-'))
 
 # CSRF Trusted Origins
 CSRF_TRUSTED_ORIGINS = [
@@ -149,21 +149,33 @@ JWT_AUTH_COOKIE = 'my-app-auth'
 JWT_AUTH_REFRESH_COOKIE = 'my-refresh-token'
 JWT_AUTH_SAMESITE = 'None'
 
+# REST Auth Serializers
+REST_AUTH_SERIALIZERS = {
+    'USER_DETAILS_SERIALIZER': 'fitshare_api.serializers.CurrentUserSerializer',
+}
+
 # CORS configuration
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "https://fitshare-d428ae7f1a9.herokuapp.com",
     "https://3000-mabdillahi88-fitshare-yf826mfdqxj.ws.codeinstitute-ide.net",
 ]
-CORS_ALLOW_CREDENTIALS = True
 
-# Optionally, specify allowed headers if needed
-from corsheaders.defaults import default_headers
+if 'GITPOD_WORKSPACE_URL' in os.environ:
+    gitpod_origin = os.environ['GITPOD_WORKSPACE_URL']
+    CORS_ALLOWED_ORIGINS.append(gitpod_origin)
+
+CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_HEADERS = list(default_headers) + [
     'x-csrftoken',
     'authorization',
     'content-type',
 ]
+
+# CSRF Cookie settings for secured requests
+CSRF_COOKIE_SECURE = not DEBUG
+CSRF_COOKIE_HTTPONLY = True
+CSRF_COOKIE_SAMESITE = 'None'
 
 # Allauth email configurations
 ACCOUNT_EMAIL_VERIFICATION = 'none'
