@@ -1,7 +1,5 @@
 import os
 from pathlib import Path
-import dj_database_url
-from corsheaders.defaults import default_headers
 
 if os.path.exists('env.py'):
     import env
@@ -10,7 +8,7 @@ if os.path.exists('env.py'):
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Security settings
-SECRET_KEY = os.getenv('SECRET_KEY')
+SECRET_KEY = os.getenv('SECRET_KEY', 'replace-this-with-your-secret-key')
 DEBUG = 'DEV' in os.environ
 
 # Hosts and dynamic Gitpod workspace handling
@@ -29,7 +27,6 @@ if 'GITPOD_WORKSPACE_URL' in os.environ:
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",
     "https://fitshare-d428ae7f1a9.herokuapp.com",
-    "https://3000-mabdillahi88-fitshare-yf826mfdqxj.ws.codeinstitute-ide.net",
 ]
 
 if 'GITPOD_WORKSPACE_URL' in os.environ:
@@ -37,32 +34,34 @@ if 'GITPOD_WORKSPACE_URL' in os.environ:
     CSRF_TRUSTED_ORIGINS.append(gitpod_origin)
 
 INSTALLED_APPS = [
-    'cloudinary_storage',
-    'django.contrib.staticfiles',
-    'cloudinary',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'corsheaders',
+    'django.contrib.staticfiles',
+    'cloudinary_storage',
+    'cloudinary',
+    'rest_framework',
+    'django_filters',
+    'rest_framework.authtoken',
+    'dj_rest_auth',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'dj_rest_auth.registration',
     'profiles',
     'posts',
     'comments',
     'likes',
     'followers',
-    'rest_framework',
-    'django_filters',
-    'rest_framework_simplejwt',
-    'dj_rest_auth',
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-    'dj_rest_auth.registration',
 ]
 
+SITE_ID = 1
+
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',  # Must be at the top
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -82,7 +81,7 @@ TEMPLATES = [
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
-                'django.template.context_processors.request',  # Required by allauth
+                'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
@@ -93,17 +92,12 @@ TEMPLATES = [
 WSGI_APPLICATION = 'fitshare_api.wsgi.application'
 
 # Database configuration
-if 'DEV' in os.environ:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
-else:
-    DATABASES = {
-        'default': dj_database_url.parse(os.environ.get("DATABASE_URL"))
-    }
+}
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
@@ -130,26 +124,33 @@ DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # Cloudinary configuration
 CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': os.getenv('CLOUDINARY_URL').split('@')[-1],
+    'CLOUDINARY_URL': os.getenv('CLOUDINARY_URL'),
 }
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # REST framework configuration
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': [(
+        'rest_framework.authentication.SessionAuthentication'
+        if 'DEV' in os.environ
+        else 'dj_rest_auth.jwt_auth.JWTCookieAuthentication'
+    )],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10,
+    'DATETIME_FORMAT': '%d %b %Y',
 }
 
-# DJ Rest Auth and Allauth Configuration
-SITE_ID = 1
+if 'DEV' not in os.environ:
+    REST_FRAMEWORK['DEFAULT_RENDERER_CLASSES'] = [
+        'rest_framework.renderers.JSONRenderer',
+    ]
+
 REST_USE_JWT = True
+JWT_AUTH_SECURE = True
 JWT_AUTH_COOKIE = 'my-app-auth'
 JWT_AUTH_REFRESH_COOKIE = 'my-refresh-token'
-JWT_AUTH_SAMESITE = 'None'
 
-# REST Auth Serializers
 REST_AUTH_SERIALIZERS = {
     'USER_DETAILS_SERIALIZER': 'fitshare_api.serializers.CurrentUserSerializer',
 }
@@ -158,7 +159,6 @@ REST_AUTH_SERIALIZERS = {
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "https://fitshare-d428ae7f1a9.herokuapp.com",
-    "https://3000-mabdillahi88-fitshare-yf826mfdqxj.ws.codeinstitute-ide.net",
 ]
 
 if 'GITPOD_WORKSPACE_URL' in os.environ:
@@ -166,11 +166,6 @@ if 'GITPOD_WORKSPACE_URL' in os.environ:
     CORS_ALLOWED_ORIGINS.append(gitpod_origin)
 
 CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOW_HEADERS = list(default_headers) + [
-    'x-csrftoken',
-    'authorization',
-    'content-type',
-]
 
 # CSRF Cookie settings for secured requests
 CSRF_COOKIE_SECURE = not DEBUG
