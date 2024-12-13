@@ -1,32 +1,40 @@
 import os
 from pathlib import Path
-import dj_database_url  # Added for PostgreSQL configuration
-import re  # Required for regex operations
+import dj_database_url
 
 if os.path.exists('env.py'):
     import env
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+# Base directory
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# SECURITY WARNING: keep the secret key used in production secret!
+# Security settings
 SECRET_KEY = os.getenv('SECRET_KEY')
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = 'DEV' in os.environ  # Set DEBUG to True only in development
+DEBUG = 'DEV' in os.environ
 
 ALLOWED_HOSTS = [
-    os.environ.get('ALLOWED_HOST'),  # Existing environment variable
-    'localhost',  # Local development
-    '127.0.0.1',  # Local development
-    '8000-mabdillahi8-fitshareapi-ageqqbs7o91.ws.codeinstitute-ide.net',  # Gitpod workspace URL
+    os.environ.get('ALLOWED_HOST'),
+    'localhost',
+    '127.0.0.1',
+    'fitshare-d428ae7f1a9.herokuapp.com',
 ]
 
-# CSRF Trusted Origins Configuration
+# Dynamically handle Gitpod workspace hosts
+if 'GITPOD_WORKSPACE_URL' in os.environ:
+    gitpod_url = os.environ['GITPOD_WORKSPACE_URL']
+    host = gitpod_url.replace('https://', '8000-')
+    ALLOWED_HOSTS.append(host)
+
+# CSRF Trusted Origins
 CSRF_TRUSTED_ORIGINS = [
-    f"https://{os.environ.get('ALLOWED_HOST')}",  # Dynamic trusted origin
-    'https://*.codeinstitute-ide.net',  # Include wildcard for Gitpod
+    "http://localhost:3000",
+    "https://fitshare-d428ae7f1a9.herokuapp.com",
+    "https://3000-mabdillahi88-fitshare-yf826mfdqxj.ws.codeinstitute-ide.net",
 ]
+
+if 'GITPOD_WORKSPACE_URL' in os.environ:
+    gitpod_origin = os.environ['GITPOD_WORKSPACE_URL'].replace('https://', 'https://8000-')
+    CSRF_TRUSTED_ORIGINS.append(gitpod_origin)
 
 INSTALLED_APPS = [
     'cloudinary_storage',
@@ -37,7 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'corsheaders',  # Added for handling CORS
+    'corsheaders',
     'profiles',
     'posts',
     'comments',
@@ -54,7 +62,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',  # Added CORS middleware at the top
+    'corsheaders.middleware.CorsMiddleware',  # Must be at the top
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -99,18 +107,10 @@ else:
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
 # Internationalization
@@ -120,9 +120,9 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
-# Static files (CSS, JavaScript, Images)
+# Static files
 STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'  # For Heroku
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # Media files
 MEDIA_URL = '/media/'
@@ -133,7 +133,6 @@ CLOUDINARY_STORAGE = {
     'CLOUD_NAME': os.getenv('CLOUDINARY_URL').split('@')[-1],
 }
 
-# Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # REST framework configuration
@@ -151,11 +150,22 @@ JWT_AUTH_REFRESH_COOKIE = 'my-refresh-token'
 JWT_AUTH_SAMESITE = 'None'
 
 # CORS configuration
-if 'CLIENT_ORIGIN' in os.environ:
-    CORS_ALLOWED_ORIGINS = [
-        os.environ.get('CLIENT_ORIGIN')
-    ]
-if 'CLIENT_ORIGIN_DEV' in os.environ:
-    CORS_ALLOWED_ORIGIN_REGEXES = [
-        r"^https://.*\.codeinstitute-ide\.net$",
-    ]
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "https://fitshare-d428ae7f1a9.herokuapp.com",
+    "https://3000-mabdillahi88-fitshare-yf826mfdqxj.ws.codeinstitute-ide.net",
+]
+CORS_ALLOW_CREDENTIALS = True
+
+# Optionally, specify allowed headers if needed
+from corsheaders.defaults import default_headers
+CORS_ALLOW_HEADERS = list(default_headers) + [
+    'x-csrftoken',
+    'authorization',
+    'content-type',
+]
+
+# Allauth email configurations
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+ACCOUNT_AUTHENTICATION_METHOD = 'username'
+ACCOUNT_EMAIL_REQUIRED = False
