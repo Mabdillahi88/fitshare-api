@@ -1,21 +1,36 @@
-from django.conf import settings
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-
-def home_view(request):
-    return Response({"message": "Welcome to the FitShare API!"})
+from django.conf import settings
 
 @api_view(['GET'])
 def root_route(request):
-    return Response({"message": "Welcome to the FitShare API root route!"})
+    """
+    A simple root route returning a welcome message.
+    """
+    return Response({"message": "Welcome to the FitShare API!"})
 
 @api_view(['POST'])
-def logout_view(request):
+def logout_route(request):
     """
-    Custom logout view to fix the dj-rest-auth logout bug.
-    This ensures the JWT cookies are properly cleared.
+    Custom logout view to clear JWT cookies.
     """
     response = Response({"detail": "Successfully logged out."})
-    response.delete_cookie(settings.JWT_AUTH_COOKIE, samesite=settings.JWT_AUTH_SAMESITE, secure=True, httponly=True)
-    response.delete_cookie(settings.JWT_AUTH_REFRESH_COOKIE, samesite=settings.JWT_AUTH_SAMESITE, secure=True, httponly=True)
+    response.set_cookie(
+        key=settings.JWT_AUTH_COOKIE,
+        value='',
+        httponly=True,
+        expires='Thu, 01 Jan 1970 00:00:00 GMT',
+        max_age=0,
+        samesite=settings.JWT_AUTH_SAMESITE,
+        secure=settings.JWT_AUTH_SECURE,
+    )
+    response.set_cookie(
+        key=settings.JWT_AUTH_REFRESH_COOKIE,
+        value='',
+        httponly=True,
+        expires='Thu, 01 Jan 1970 00:00:00 GMT',
+        max_age=0,
+        samesite=settings.JWT_AUTH_SAMESITE,
+        secure=settings.JWT_AUTH_SECURE,
+    )
     return response

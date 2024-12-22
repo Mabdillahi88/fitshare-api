@@ -9,7 +9,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Security settings
 SECRET_KEY = os.getenv('SECRET_KEY', 'replace-this-with-your-secret-key')
-DEBUG = 'DEV' in os.environ
+
+# Enable DEBUG mode
+DEBUG = True  # Changed to True for debugging purposes
 
 # Hosts and dynamic Gitpod workspace handling
 ALLOWED_HOSTS = [
@@ -17,22 +19,15 @@ ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
     'fitshare-d428ae7f1a9.herokuapp.com',
+    '8000-mabdillahi8-fitshareapi-ageqqbs7o91.ws.codeinstitute-ide.net',
 ]
-
-# if 'GITPOD_WORKSPACE_URL' in os.environ:
-#     gitpod_url = os.environ['GITPOD_WORKSPACE_URL']
-#     ALLOWED_HOSTS.append(gitpod_url.replace('https://', '8000-'))
 
 # CSRF Trusted Origins
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",
     "https://fitshare-d428ae7f1a9.herokuapp.com",
+    "https://8000-mabdillahi8-fitshareapi-ageqqbs7o91.ws.codeinstitute-ide.net",  # Add this line
 ]
-
-# if 'GITPOD_WORKSPACE_URL' in os.environ:
-#     gitpod_origin = os.environ['GITPOD_WORKSPACE_URL'].replace('https://', 'https://8000-')
-#     CSRF_TRUSTED_ORIGINS.append(gitpod_origin)
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -62,7 +57,7 @@ INSTALLED_APPS = [
 SITE_ID = 1
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',  # Ensure this is the first middleware
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -92,7 +87,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'fitshare_api.wsgi.application'
 
-# Database configuration
+# Database
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -115,28 +110,26 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
-# Static files
+# Static and Media files
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-# Media files
 MEDIA_URL = '/media/'
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
-# Cloudinary configuration
 CLOUDINARY_STORAGE = {
     'CLOUDINARY_URL': os.getenv('CLOUDINARY_URL'),
 }
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# REST framework configuration
+# REST Framework
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [(
+    'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.SessionAuthentication'
         if 'DEV' in os.environ
-        else 'dj_rest_auth.jwt_auth.JWTCookieAuthentication'
-    )],
+        else 'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
+    ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10,
     'DATETIME_FORMAT': '%d %b %Y',
@@ -156,16 +149,7 @@ REST_AUTH_SERIALIZERS = {
     'USER_DETAILS_SERIALIZER': 'fitshare_api.serializers.CurrentUserSerializer',
 }
 
-# CORS configuration
-# CORS_ALLOWED_ORIGINS = [
-#     "http://localhost:3000",
-#     "https://fitshare-d428ae7f1a9.herokuapp.com",
-# ]
-
-# if 'GITPOD_WORKSPACE_URL' in os.environ:
-#     gitpod_origin = os.environ['GITPOD_WORKSPACE_URL']
-#     CORS_ALLOWED_ORIGINS.append(gitpod_origin)
-
+# CORS Configuration
 if 'CLIENT_ORIGIN' in os.environ:
     CORS_ALLOWED_ORIGINS = [
         os.environ.get('CLIENT_ORIGIN')
@@ -177,12 +161,12 @@ CORS_ALLOWED_ORIGIN_REGEXES = [
 
 CORS_ALLOW_CREDENTIALS = True
 
-# CSRF Cookie settings for secured requests
+# CSRF Cookie settings
 CSRF_COOKIE_SECURE = not DEBUG
 CSRF_COOKIE_HTTPONLY = True
 CSRF_COOKIE_SAMESITE = 'None'
 
-# Allauth email configurations
+# Allauth settings
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 ACCOUNT_AUTHENTICATION_METHOD = 'username'
 ACCOUNT_EMAIL_REQUIRED = False
