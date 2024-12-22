@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+import dj_database_url  # Import for handling DATABASE_URL
 
 if os.path.exists('env.py'):
     import env
@@ -11,7 +12,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('SECRET_KEY', 'replace-this-with-your-secret-key')
 
 # Enable DEBUG mode
-DEBUG = True  # Changed to True for debugging purposes
+DEBUG = True  # Change to False in production
 
 # Hosts and dynamic Gitpod workspace handling
 ALLOWED_HOSTS = [
@@ -26,8 +27,9 @@ ALLOWED_HOSTS = [
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",
     "https://fitshare-d428ae7f1a9.herokuapp.com",
-    "https://8000-mabdillahi8-fitshareapi-ageqqbs7o91.ws.codeinstitute-ide.net",  # Add this line
+    "https://8000-mabdillahi8-fitshareapi-ageqqbs7o91.ws.codeinstitute-ide.net",
 ]
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -89,10 +91,9 @@ WSGI_APPLICATION = 'fitshare_api.wsgi.application'
 
 # Database
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.parse(
+        os.getenv('DATABASE_URL', f'sqlite:///{BASE_DIR / "db.sqlite3"}')
+    )
 }
 
 # Password validation
@@ -156,8 +157,8 @@ if 'CLIENT_ORIGIN' in os.environ:
     ]
 
 CORS_ALLOWED_ORIGIN_REGEXES = [
-        r"^https://.*\.codeinstitute-ide\.net$",
-    ]
+    r"^https://.*\.codeinstitute-ide\.net$",
+]
 
 CORS_ALLOW_CREDENTIALS = True
 
