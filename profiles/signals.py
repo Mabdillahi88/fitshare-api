@@ -5,6 +5,12 @@ from .models import Profile
 
 @receiver(post_save, sender=User)
 def create_profile(sender, instance, created, **kwargs):
+    """
+    Signal to automatically create a Profile when a new User is created.
+    """
     if created:
-        # Check if the profile already exists before creating
-        Profile.objects.get_or_create(owner=instance)
+        try:
+            Profile.objects.get_or_create(owner=instance)
+        except Exception as e:
+            # Log the exception or handle it gracefully
+            print(f"Error creating profile for user {instance.username}: {e}")
