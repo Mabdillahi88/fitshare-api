@@ -2,6 +2,8 @@ from django.contrib import admin
 from django.urls import path, include
 from fitshare_api.views import root_route, logout_route
 
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', root_route, name='root'),

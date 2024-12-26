@@ -1,54 +1,35 @@
 import os
-import re
 from pathlib import Path
-import dj_database_url  # For handling DATABASE_URL
+import dj_database_url  # Import for handling DATABASE_URL
 
-# Load environment variables from env.py if it exists
 if os.path.exists('env.py'):
     import env
 
-# Base Directory
+# Base directory
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Security settings
 SECRET_KEY = os.getenv('SECRET_KEY', 'replace-this-with-your-secret-key')
 
-# Debug settings
-DEBUG = os.getenv('DEBUG', 'False') == 'True'
+# Enable DEBUG mode
+DEBUG = True  # Change to False in production
 
-# Allowed Hosts
+# Hosts and dynamic Gitpod workspace handling
 ALLOWED_HOSTS = [
-    os.getenv('ALLOWED_HOST', 'localhost'),
+    os.environ.get('ALLOWED_HOST'),
+    'localhost',
     '127.0.0.1',
     'fitshare-d428ae7f1a9.herokuapp.com',
     '8000-mabdillahi8-fitshareapi-ageqqbs7o91.ws.codeinstitute-ide.net',
 ]
 
-# Add Render external hostname dynamically
-RENDER_EXTERNAL_HOSTNAME = os.getenv('RENDER_EXTERNAL_HOSTNAME')
-if RENDER_EXTERNAL_HOSTNAME:
-    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
-
-# CORS Configuration
-CORS_ALLOWED_ORIGINS = [
-    os.getenv('CLIENT_ORIGIN', 'http://localhost:3000'),
-    "https://fitshare-d428ae7f1a9.herokuapp.com",
-]
-CORS_ALLOWED_ORIGIN_REGEXES = [
-    r"^https://.*\.codeinstitute-ide\.net$",
-]
-CORS_ALLOW_CREDENTIALS = True
-
-# CSRF Configuration
+# CSRF Trusted Origins
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",
     "https://fitshare-d428ae7f1a9.herokuapp.com",
+    "https://8000-mabdillahi8-fitshareapi-ageqqbs7o91.ws.codeinstitute-ide.net",
 ]
-CSRF_COOKIE_SECURE = not DEBUG
-CSRF_COOKIE_HTTPONLY = True
-CSRF_COOKIE_SAMESITE = 'None'
 
-# Installed Apps
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -77,7 +58,6 @@ INSTALLED_APPS = [
 
 SITE_ID = 1
 
-# Middleware
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
@@ -91,7 +71,6 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'fitshare_api.urls'
 
-# Templates
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -117,7 +96,7 @@ DATABASES = {
     )
 }
 
-# Password Validation
+# Password validation
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
@@ -132,9 +111,10 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
-# Static and Media Files
+# Static and Media files
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+
 MEDIA_URL = '/media/'
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
@@ -144,7 +124,7 @@ CLOUDINARY_STORAGE = {
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# REST Framework Configuration
+# REST Framework
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.SessionAuthentication'
@@ -170,7 +150,24 @@ REST_AUTH_SERIALIZERS = {
     'USER_DETAILS_SERIALIZER': 'fitshare_api.serializers.CurrentUserSerializer',
 }
 
-# Allauth Settings
+# CORS Configuration
+if 'CLIENT_ORIGIN' in os.environ:
+    CORS_ALLOWED_ORIGINS = [
+        os.environ.get('CLIENT_ORIGIN')
+    ]
+
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    r"^https://.*\.codeinstitute-ide\.net$",
+]
+
+CORS_ALLOW_CREDENTIALS = True
+
+# CSRF Cookie settings
+CSRF_COOKIE_SECURE = not DEBUG
+CSRF_COOKIE_HTTPONLY = True
+CSRF_COOKIE_SAMESITE = 'None'
+
+# Allauth settings
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 ACCOUNT_AUTHENTICATION_METHOD = 'username'
 ACCOUNT_EMAIL_REQUIRED = False
