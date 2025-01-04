@@ -1,43 +1,74 @@
-import os
 from pathlib import Path
-import dj_database_url  # Import for handling DATABASE_URL
+import os
+import dj_database_url
+from urllib.parse import urlparse
 
 if os.path.exists('env.py'):
     import env
+
+# Cloudinary Storage Configuration
+CLOUDINARY_STORAGE = {
+    'CLOUDINARY_URL': os.environ.get('CLOUDINARY_URL')
+}
+MEDIA_URL = '/media/'
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # Base directory
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Security settings
-SECRET_KEY = os.getenv('SECRET_KEY', 'replace-this-with-your-secret-key')
+SECRET_KEY = os.getenv('SECRET_KEY', 'unsafe-default-secret-key')
 
-# Enable DEBUG mode
-DEBUG = True  # Change to False in production
+# Enable DEBUG mode based on environment
+DEBUG = 'DEV' in os.environ
 
 # Hosts and dynamic Gitpod workspace handling
 ALLOWED_HOSTS = [
     os.environ.get('ALLOWED_HOST'),
     'localhost',
     '127.0.0.1',
-    'fitshare-d428ae7f1a9.herokuapp.com',
-    '8000-mabdillahi8-fitshareapi-ageqqbs7o91.ws.codeinstitute-ide.net',
+    'https://fitshare-d428ae7f1a9f.herokuapp.com',  # Replace with deployed URL
+    '8000-mabdillahi8-fitshareapi-ageqqbs7o91.ws.codeinstitute-ide.net',  # Gitpod workspace
+    'mabdillahi8-fitshareapi-ageqqbs7o91.ws.codeinstitute-ide.net',
 ]
+
+# Dynamically add Gitpod workspace URL
+if 'GITPOD_WORKSPACE_URL' in os.environ:
+    workspace_url = os.environ['GITPOD_WORKSPACE_URL']
+    parsed_url = urlparse(workspace_url)
+    ALLOWED_HOSTS.append(parsed_url.netloc)
+
+print("ALLOWED_HOSTS:", ALLOWED_HOSTS)
 
 # CSRF Trusted Origins
 CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:3000",
-    "https://fitshare-d428ae7f1a9.herokuapp.com",
-    "https://8000-mabdillahi8-fitshareapi-ageqqbs7o91.ws.codeinstitute-ide.net",
+    'https://fitshare-d428ae7f1a9f.herokuapp.com',  # Replace with deployed URL
+    'http://127.0.0.1:8000',  # Local development
+    'https://8000-mabdillahi8-fitshareapi-ageqqbs7o91.ws.codeinstitute-ide.net',
+    'https://mabdillahi8-fitshareapi-ageqqbs7o91.ws.codeinstitute-ide.net',
 ]
 
+if 'GITPOD_WORKSPACE_URL' in os.environ:
+    workspace_url = os.environ['GITPOD_WORKSPACE_URL']
+    parsed_url = urlparse(workspace_url)
+    CSRF_TRUSTED_ORIGINS.append(f"https://{parsed_url.netloc}")
+
+# CORS Allowed Origins
+CORS_ALLOWED_ORIGINS = [
+    'https://fitshare-d428ae7f1a9f.herokuapp.com',  # Replace with deployed URL
+    'https://8000-mabdillahi8-fitshareapi-ageqqbs7o91.ws.codeinstitute-ide.net',
+    'https://mabdillahi8-fitshareapi-ageqqbs7o91.ws.codeinstitute-ide.net',
+]
+
+# Installed Applications
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
     'cloudinary_storage',
+    'django.contrib.staticfiles',
     'cloudinary',
     'rest_framework',
     'django_filters',
@@ -48,16 +79,17 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'dj_rest_auth.registration',
+    'rest_framework_simplejwt.token_blacklist',
+    'corsheaders',
     'profiles',
     'posts',
     'comments',
     'likes',
     'followers',
-    'corsheaders',
 ]
-
 SITE_ID = 1
 
+# Middleware
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
@@ -69,8 +101,10 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+# URL Configuration
 ROOT_URLCONF = 'fitshare_api.urls'
 
+# Templates
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -87,16 +121,23 @@ TEMPLATES = [
     },
 ]
 
+# WSGI Application
 WSGI_APPLICATION = 'fitshare_api.wsgi.application'
 
-# Database
-DATABASES = {
-    'default': dj_database_url.parse(
-        os.getenv('DATABASE_URL', f'sqlite:///{BASE_DIR / "db.sqlite3"}')
-    )
-}
+# Database Configuration
+if 'DEV' in os.environ:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
+else:
+    DATABASES = {
+        'default': dj_database_url.parse(os.environ.get("DATABASE_URL"))
+    }
 
-# Password validation
+# Password Validation
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
@@ -111,20 +152,11 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
-# Static and Media files
+# Static and Media Files
 STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-MEDIA_URL = '/media/'
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-
-CLOUDINARY_STORAGE = {
-    'CLOUDINARY_URL': os.getenv('CLOUDINARY_URL'),
-}
-
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-# REST Framework
+# REST Framework Configuration
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.SessionAuthentication'
@@ -145,29 +177,23 @@ REST_USE_JWT = True
 JWT_AUTH_SECURE = True
 JWT_AUTH_COOKIE = 'my-app-auth'
 JWT_AUTH_REFRESH_COOKIE = 'my-refresh-token'
+JWT_AUTH_SAMESITE = 'None'
 
-REST_AUTH_SERIALIZERS = {
-    'USER_DETAILS_SERIALIZER': 'fitshare_api.serializers.CurrentUserSerializer',
+REST_AUTH = {
+    'USE_JWT': True,
+    'JWT_AUTH_HTTPONLY': False,
+    'JWT_AUTH_COOKIE': 'auth-token',
+    'JWT_AUTH_REFRESH_COOKIE': 'refresh-token',
+    'JWT_AUTH_SECURE': True,
+    'JWT_AUTH_SAMESITE': 'None',
 }
 
+REST_AUTH_SERIALIZERS = {
+    'USER_DETAILS_SERIALIZER': 'fitshare_api.serializers.CurrentUserSerializer'
+}
+
+# Email Backend
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 # CORS Configuration
-if 'CLIENT_ORIGIN' in os.environ:
-    CORS_ALLOWED_ORIGINS = [
-        os.environ.get('CLIENT_ORIGIN')
-    ]
-
-CORS_ALLOWED_ORIGIN_REGEXES = [
-    r"^https://.*\.codeinstitute-ide\.net$",
-]
-
 CORS_ALLOW_CREDENTIALS = True
-
-# CSRF Cookie settings
-CSRF_COOKIE_SECURE = not DEBUG
-CSRF_COOKIE_HTTPONLY = True
-CSRF_COOKIE_SAMESITE = 'None'
-
-# Allauth settings
-ACCOUNT_EMAIL_VERIFICATION = 'none'
-ACCOUNT_AUTHENTICATION_METHOD = 'username'
-ACCOUNT_EMAIL_REQUIRED = False
