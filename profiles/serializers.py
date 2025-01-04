@@ -1,8 +1,6 @@
 from rest_framework import serializers
-from django.db.models import Count
 from .models import Profile
 from followers.models import Follower
-
 
 class ProfileSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.username')
@@ -12,6 +10,19 @@ class ProfileSerializer(serializers.ModelSerializer):
     followers_count = serializers.ReadOnlyField()
     following_count = serializers.ReadOnlyField()
 
+    def get_is_owner(self, obj):
+        request = self.context['request']
+        return request.user == obj.owner
+
+    def get_following_id(self, obj):
+        user = self.context['request'].user
+        if user.is_authenticated:
+            following = Follower.objects.filter(
+                owner=user, followed=obj.owner
+            ).first()
+            return following.id if following else None
+        return None
+
     class Meta:
         model = Profile
         fields = [
@@ -19,16 +30,3 @@ class ProfileSerializer(serializers.ModelSerializer):
             'content', 'image', 'is_owner', 'following_id',
             'posts_count', 'followers_count', 'following_count',
         ]
-
-    def get_is_owner(self, obj):
-        request = self.context.get('request')
-        return request and request.user == obj.owner
-
-    def get_following_id(self, obj):
-        request = self.context.get('request')
-        if request and request.user.is_authenticated:
-            follower = Follower.objects.filter(
-                owner=request.user, followed=obj.owner
-            ).first()
-            return follower.id if follower else None
-        return None

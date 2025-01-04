@@ -1,32 +1,25 @@
 from rest_framework import generics, permissions
-from rest_framework.exceptions import ValidationError
-from profiles.permissions import IsOwnerOrReadOnly
-from .models import Like
-from .serializers import LikeSerializer
+from fitshare_api.permissions import IsOwnerOrReadOnly
+from likes.models import Like
+from likes.serializers import LikeSerializer
+
 
 class LikeList(generics.ListCreateAPIView):
     """
-    List all likes or create a new like.
-    Prevents duplicate likes.
+    List likes or create a like if logged in.
     """
-    queryset = Like.objects.all()
-    serializer_class = LikeSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    serializer_class = LikeSerializer
+    queryset = Like.objects.all()
 
     def perform_create(self, serializer):
-        """
-        Prevent duplicate likes by the same user on the same post.
-        """
-        if Like.objects.filter(owner=self.request.user, post=serializer.validated_data['post']).exists():
-            raise ValidationError("You have already liked this post.")
         serializer.save(owner=self.request.user)
 
 
 class LikeDetail(generics.RetrieveDestroyAPIView):
     """
-    Retrieve or delete a like.
-    Deletion is restricted to the owner.
+    Retrieve a like or delete it by id if you own it.
     """
-    queryset = Like.objects.all()
-    serializer_class = LikeSerializer
     permission_classes = [IsOwnerOrReadOnly]
+    serializer_class = LikeSerializer
+    queryset = Like.objects.all()

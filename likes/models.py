@@ -8,8 +8,8 @@ class Like(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        unique_together = ['owner', 'post']
         ordering = ['-created_at']
+        unique_together = ['owner', 'post']
 
     def __str__(self):
-        return f'{self.owner} liked {self.post}'
+        return f"{self.owner} likes {self.post}"
