@@ -1,6 +1,7 @@
 from rest_framework import generics, permissions
 from .models import Follower
 from .serializers import FollowerSerializer
+from fitshare_api.permissions import IsOwnerOrReadOnly
 
 class FollowerList(generics.ListCreateAPIView):
     """
