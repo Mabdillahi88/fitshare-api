@@ -10,6 +10,13 @@ class PostSerializer(serializers.ModelSerializer):
     like_id = serializers.SerializerMethodField()
     comments_count = serializers.ReadOnlyField()
     likes_count = serializers.ReadOnlyField()
+    def get_image(self, obj):
+        # Check if the image is the default
+        if obj.image.name == 'default_profile.jpg':
+            # Return the full Cloudinary URL for the default image
+            return 'https://res.cloudinary.com/dffdb3kza/image/upload/v1736456577/default_profile_acp73s.jpg'
+        # Return the uploaded image URL
+        return obj.image.url
 
     def validate_image(self, value):
         if value.size > 2 * 1024 * 1024:
