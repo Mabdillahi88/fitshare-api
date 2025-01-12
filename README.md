@@ -100,3 +100,122 @@ The following models were created to represent the database model structure of t
 
 ### PEP8 Validation
 [PEP8](http://pep8online.com/) Validation Service was used to check the code for PEP8 requirements. All the code passes with no errors or warnings.
+
+## Testing
+
+Comprehensive testing was conducted to ensure the robustness and reliability of FitShare's functionality. The testing process included both manual and automated approaches to validate the application’s features and user stories.
+
+---
+
+### Manual Testing of User Stories
+
+The manual testing focused on verifying key functionalities of the application against the defined user stories. Each feature was rigorously tested for expected outcomes and edge cases.
+
+**Test** | **Action** | **Expected Result** | **Actual Result**
+-------- | ------------------- | ------------------- | -----------------
+User Management | Create, update, and delete users | Admin can manage user accounts seamlessly | Works as expected
+User Permissions | Modify user permissions | Admin can update user roles and permissions | Works as expected
+Profile Management | Create, update, and delete profiles | Users can manage their profiles | Works as expected
+Post Management | Create, update, and delete posts | Users can manage posts | Works as expected
+Comment Management | Create, update, and delete comments | Users can manage comments on posts | Works as expected
+Likes | Add and remove likes | Users can like or unlike posts | Works as expected
+Followers | Follow and unfollow users | Users can follow or unfollow other users | Works as expected
+
+- **Authentication:** Only logged-in users can create, update, or delete posts, comments, likes, or follow/unfollow users.  
+- **Authorization:** Users can only modify or delete their own content, maintaining user privacy and data security.
+
+---
+
+<details><summary><strong>Screenshots: User Management</strong></summary>
+    <details><summary>Create User</summary>
+    <img src="docs/testing/user-create-test.png" alt="Create user test screenshot">
+    </details>
+    <details><summary>New Test User</summary>
+    <img src="docs/testing/test-user.png" alt="New Test User">
+    </details>
+    <details><summary>New Test User Profile</summary>
+    <img src="docs/testing/test-user-profile.png" alt="New Test User Profile">
+    </details>
+    <details><summary>Change User Permissions</summary>
+    <img src="docs/testing/user-change-permissions-test.png" alt="Change user permissions screenshot">
+    </details>
+</details>
+
+<details><summary><strong>Screenshots: Profile Management</strong></summary>
+    <details><summary>Update Profile</summary>
+    <img src="docs/testing/profile-update-test.png" alt="Update profile screenshot">
+    </details>
+    <details><summary>Delete Profile 1.1</summary>
+    <img src="docs/testing/profile-delete-test1.1.png" alt="Delete profile screenshot">
+    </details>
+        <details><summary>Delete Profile 1.2</summary>
+    <img src="docs/testing/profile-delete-test1.2.png" alt="Delete profile screenshot">
+    </details>
+</details>
+
+<details><summary><strong>Screenshots: Post Management</strong></summary>
+    <details><summary>Create Post</summary>
+    <img src="docs/testing/post-create-test.png" alt="Create post screenshot">
+    </details>
+    <details><summary>Update Post</summary>
+    <img src="docs/testing/post-update-test.png" alt="Update post screenshot">
+    </details>
+    <details><summary>Delete Post 1.1</summary>
+    <img src="docs/testing/post-delete-test1.1.png" alt="Delete post screenshot">
+    </details>
+        <details><summary>Delete Post 1.2</summary>
+    <img src="docs/testing/post-delete-test1.2.png" alt="Delete post screenshot">
+    </details>
+</details>
+
+<details><summary><strong>Screenshots: Comment Management</strong></summary>
+    <details><summary>Create Comment</summary>
+    <img src="docs/testing/comment-create-test.png" alt="Create comment screenshot">
+    </details>
+    <details><summary>Update Comment</summary>
+    <img src="docs/testing/comment-update-test.png" alt="Update comment screenshot">
+    </details>
+    <details><summary>Delete Comment</summary>
+    <img src="docs/testing/comment-delete-test.png" alt="Delete comment screenshot">
+    </details>
+</details>
+
+<details><summary><strong>Screenshots: Likes</strong></summary>
+    <details><summary>Add Like</summary>
+    <img src="docs/testing/like-create-test.png" alt="Add like screenshot">
+    </details>
+    <details><summary>Remove Like</summary>
+    <img src="docs/testing/like-delete-test.png" alt="Remove like screenshot">
+    </details>
+</details>
+
+<details><summary><strong>Screenshots: Followers</strong></summary>
+    <details><summary>Follow User</summary>
+    <img src="docs/testing/follower-create-test.png" alt="Follow user screenshot">
+    </details>
+    <details><summary>Unfollow User</summary>
+    <img src="docs/testing/follower-delete-test.png" alt="Unfollow user screenshot">
+    </details>
+</details>
+
+---
+
+### Automated Testing
+
+Automated tests were implemented to validate the backend API and ensure its consistency under various scenarios. The testing process was conducted as follows:
+
+- **Framework**: [Django REST Framework APITestCase](https://www.django-rest-framework.org/api-guide/testing/) was used to write and execute test cases.
+- **Coverage**: All models, serializers, and views were thoroughly tested.
+- **Key Areas Tested**:
+  - User authentication and permissions.
+  - CRUD operations for profiles, posts, comments, likes, and followers.
+  - Edge cases, such as attempts to modify or delete content by unauthorized users.
+- **Results**: All automated test cases passed successfully, confirming the integrity of the application's features.
+
+---
+
+### Summary
+
+The testing phase confirmed that the FitShare application meets all functional requirements and performs reliably across different scenarios. Both manual and automated tests have validated the robustness of the backend API, ensuring a secure and seamless user experience.
+
+##### Back to [top](#table-of-contents)
