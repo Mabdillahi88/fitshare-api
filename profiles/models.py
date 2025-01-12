@@ -11,8 +11,8 @@ class Profile(models.Model):
     content = models.TextField(blank=True)
     image = models.ImageField(
         upload_to='images/',
-        default='default_profile.jpg',
-    )  # Use a relative name for the default image
+        default='default_profile.jpg',  # Local placeholder name for default image
+    )
 
     class Meta:
         ordering = ['-created_at']
@@ -21,6 +21,7 @@ class Profile(models.Model):
         return f"{self.owner}'s profile"
 
 
+# Signal to automatically create a profile for new users
 def create_profile(sender, instance, created, **kwargs):
     if created:
         Profile.objects.create(owner=instance)
