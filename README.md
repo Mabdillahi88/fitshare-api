@@ -19,11 +19,6 @@ This repository contains the API set up using Django REST Framework for the FitS
 The back-end section of the FitShare project focuses on its administration side and covers one user story:
 - As an admin, I want to be able to create, edit, and delete users, posts, comments, and likes, so that I can have control over the content of the application and remove any inappropriate content.
 
-## Database
-
-The following models were created to represent the database model structure of the application:
-<img src="docs/readme/fitshare-database-diagram.png">
-
 #### User Model
 
 - The User model contains information about the user. It is part of the Django allauth library.
