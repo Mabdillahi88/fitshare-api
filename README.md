@@ -175,8 +175,11 @@ Followers | Follow and unfollow users | Users can follow or unfollow other users
     <details><summary>Update Comment</summary>
     <img src="docs/testing/comment-update-test.png" alt="Update comment screenshot">
     </details>
-    <details><summary>Delete Comment</summary>
-    <img src="docs/testing/comment-delete-test.png" alt="Delete comment screenshot">
+    <details><summary>Delete Comment 1.1</summary>
+    <img src="docs/testing/comment-delete-test1.1.png" alt="Delete comment screenshot">
+    </details>
+    <details><summary>Delete Comment 1.2</summary>
+    <img src="docs/testing/comment-delete-test1.2.png" alt="Delete comment screenshot">
     </details>
 </details>
 
@@ -184,8 +187,11 @@ Followers | Follow and unfollow users | Users can follow or unfollow other users
     <details><summary>Add Like</summary>
     <img src="docs/testing/like-create-test.png" alt="Add like screenshot">
     </details>
-    <details><summary>Remove Like</summary>
-    <img src="docs/testing/like-delete-test.png" alt="Remove like screenshot">
+    <details><summary>Remove Like 1.1</summary>
+    <img src="docs/testing/like-delete-test1.1.png" alt="Remove like screenshot">
+    </details>
+    <details><summary>Remove Like 1.2</summary>
+    <img src="docs/testing/like-delete-test1.2.png" alt="Remove like screenshot">
     </details>
 </details>
 
@@ -193,8 +199,11 @@ Followers | Follow and unfollow users | Users can follow or unfollow other users
     <details><summary>Follow User</summary>
     <img src="docs/testing/follower-create-test.png" alt="Follow user screenshot">
     </details>
-    <details><summary>Unfollow User</summary>
-    <img src="docs/testing/follower-delete-test.png" alt="Unfollow user screenshot">
+    <details><summary>Unfollow User 1.1</summary>
+    <img src="docs/testing/follower-delete-test1.1.png" alt="Unfollow user screenshot">
+    </details>
+    <details><summary>Unfollow User 1.2</summary>
+    <img src="docs/testing/follower-delete-test1.2.png" alt="Unfollow user screenshot">
     </details>
 </details>
 
