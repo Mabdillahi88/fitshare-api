@@ -19,8 +19,7 @@ class ProfileSerializer(serializers.ModelSerializer):
         if obj.image.name == 'default_profile.jpg':
             # Return the Cloudinary-hosted default image
             return (
-                'https://res.cloudinary.com/dffdb3kza/image/'
-                'upload/v1736456577/default_profile_acp73s.jpg'
+                'https://res.cloudinary.com/dffdb3kza/image/upload/v1736456577/default_profile_acp73s.jpg'
             )
         # Return the uploaded image's URL
         return obj.image.url
