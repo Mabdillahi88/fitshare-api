@@ -11,7 +11,8 @@ class Profile(models.Model):
     content = models.TextField(blank=True)
     image = models.ImageField(
         upload_to='images/',
-        default='default_profile.jpg',  # Local placeholder name for default image
+        blank=True,  # Allow the image field to be empty
+        null=True    # Allow the image field to store null values
     )
 
     class Meta:
