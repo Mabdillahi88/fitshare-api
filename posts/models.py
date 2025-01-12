@@ -21,7 +21,7 @@ class Post(models.Model):
         ('toaster', 'Toaster'),
         ('valencia', 'Valencia'),
         ('walden', 'Walden'),
-        ('xpro2', 'X-pro II')
+        ('xpro2', 'X-pro II'),
     ]
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -40,3 +40,4 @@ class Post(models.Model):
 
     def __str__(self):
         return f'{self.id} {self.title}'
+

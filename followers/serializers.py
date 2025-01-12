@@ -3,10 +3,13 @@ from rest_framework.exceptions import ValidationError
 from django.contrib.auth.models import User
 from .models import Follower
 
+
 class FollowerSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.username')
     followed_name = serializers.ReadOnlyField(source='followed.username')
-    followed = serializers.CharField(write_only=True)  # Accept either id or username as a string
+    followed = serializers.CharField(
+        write_only=True
+    )  # Accept either ID or username as a string
 
     class Meta:
         model = Follower
@@ -23,7 +26,9 @@ class FollowerSerializer(serializers.ModelSerializer):
             # Otherwise, treat it as a username
             return User.objects.get(username=value)
         except User.DoesNotExist:
-            raise ValidationError("The user you are trying to follow does not exist.")
+            raise ValidationError(
+                "The user you are trying to follow does not exist."
+            )
 
     def create(self, validated_data):
         """
@@ -33,6 +38,8 @@ class FollowerSerializer(serializers.ModelSerializer):
         followed = validated_data['followed']
 
         if Follower.objects.filter(owner=owner, followed=followed).exists():
-            raise ValidationError({'detail': 'You are already following this user.'})
+            raise ValidationError(
+                {'detail': 'You are already following this user.'}
+            )
 
         return Follower.objects.create(owner=owner, followed=followed)

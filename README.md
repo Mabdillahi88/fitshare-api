@@ -94,3 +94,9 @@ The following models were created to represent the database model structure of t
 - [PostgreSQL](https://www.postgresql.org/) – deployed project on Render uses a PostgreSQL database.
 
 ##### Back to [top](#table-of-contents)
+
+
+## Validation
+
+### PEP8 Validation
+[PEP8](http://pep8online.com/) Validation Service was used to check the code for PEP8 requirements. All the code passes with no errors or warnings.

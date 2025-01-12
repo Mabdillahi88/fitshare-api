@@ -2,6 +2,7 @@ from rest_framework import serializers
 from .models import Profile
 from followers.models import Follower
 
+
 class ProfileSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.username')
     is_owner = serializers.SerializerMethodField()
@@ -15,7 +16,10 @@ class ProfileSerializer(serializers.ModelSerializer):
         # Check if the image is the default
         if obj.image.name == 'default_profile.jpg':
             # Return the full Cloudinary URL for the default image
-            return 'https://res.cloudinary.com/dffdb3kza/image/upload/v1736456577/default_profile_acp73s.jpg'
+            return (
+                'https://res.cloudinary.com/dffdb3kza/image/'
+                'upload/v1736456577/default_profile_acp73s.jpg'
+            )
         # Return the uploaded image URL
         return obj.image.url
 
