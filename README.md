@@ -209,20 +209,6 @@ Followers | Follow and unfollow users | Users can follow or unfollow other users
 
 ---
 
-### Automated Testing
-
-Automated tests were implemented to validate the backend API and ensure its consistency under various scenarios. The testing process was conducted as follows:
-
-- **Framework**: [Django REST Framework APITestCase](https://www.django-rest-framework.org/api-guide/testing/) was used to write and execute test cases.
-- **Coverage**: All models, serializers, and views were thoroughly tested.
-- **Key Areas Tested**:
-  - User authentication and permissions.
-  - CRUD operations for profiles, posts, comments, likes, and followers.
-  - Edge cases, such as attempts to modify or delete content by unauthorized users.
-- **Results**: All automated test cases passed successfully, confirming the integrity of the application's features.
-
----
-
 ### Summary
 
 The testing phase confirmed that the FitShare application meets all functional requirements and performs reliably across different scenarios. Both manual and automated tests have validated the robustness of the backend API, ensuring a secure and seamless user experience.
