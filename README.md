@@ -228,3 +228,12 @@ Automated tests were implemented to validate the backend API and ensure its cons
 The testing phase confirmed that the FitShare application meets all functional requirements and performs reliably across different scenarios. Both manual and automated tests have validated the robustness of the backend API, ensuring a secure and seamless user experience.
 
 ##### Back to [top](#table-of-contents)
+
+
+## Credits
+
+### Code
+
+This project was heavily inspired by the Code Institute's Django REST API walkthrough project, ['Moments'](https://github.com/Code-Institute-Solutions/drf-api).
+
+##### Back to [top](#table-of-contents)
