@@ -25,10 +25,16 @@ class ProfileSerializer(serializers.ModelSerializer):
         return obj.image.url
 
     def get_is_owner(self, obj):
+        """
+        Checks if the current user is the owner of the profile.
+        """
         request = self.context['request']
         return request.user == obj.owner
 
     def get_following_id(self, obj):
+        """
+        Returns the ID of the Follower relationship if the current user is following the profile owner.
+        """
         user = self.context['request'].user
         if user.is_authenticated:
             following = Follower.objects.filter(
