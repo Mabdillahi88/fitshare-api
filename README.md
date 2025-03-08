@@ -1,6 +1,6 @@
 # FitShare API in DRF
 
-**Developer: Mr. Mohamed Abdillahi**
+**Developer: Master Mohamed Abdillahi**
 
 💻 [Live link](https://fitshareapi-b9588b2c11b9.herokuapp.com/)
 
