@@ -5,12 +5,26 @@ from likes.models import Like
 from comments.models import Comment
 from achievements.models import Achievement
 
-# Define thresholds for achievements
-POPULAR_LIKES_THRESHOLD = 10
-POPULAR_COMMENTS_THRESHOLD = 5
-COMMENT_CHAMPION_THRESHOLD = 20
+# Reduced thresholds for easier testing
+POPULAR_LIKES_THRESHOLD = 1
+POPULAR_COMMENTS_THRESHOLD = 1
+COMMENT_CHAMPION_THRESHOLD = 2
 
-# Award "Popular Post" achievement based on likes
+# Award "Newbie" when a user makes their first post
+@receiver(post_save, sender=Post)
+def award_newbie_achievement(sender, instance, created, **kwargs):
+    if created:
+        user = instance.owner
+        # Check if this is the user's first post
+        if Post.objects.filter(owner=user).count() == 1:
+            if not Achievement.objects.filter(user=user, title="Newbie").exists():
+                Achievement.objects.create(
+                    user=user,
+                    title="Newbie",
+                    description="Congratulations on creating your first post!"
+                )
+
+# Award "Popular Post" based on likes
 @receiver(post_save, sender=Like)
 def award_popular_post_by_like(sender, instance, created, **kwargs):
     if created:
@@ -21,10 +35,10 @@ def award_popular_post_by_like(sender, instance, created, **kwargs):
                 Achievement.objects.create(
                     user=post.owner,
                     title="Popular Post",
-                    description="One of your posts has received significant engagement through likes!"
+                    description="Your post has received significant engagement through likes!"
                 )
 
-# Award "Popular Post" achievement based on comments
+# Award "Popular Post" based on comments
 @receiver(post_save, sender=Comment)
 def award_popular_post_by_comment(sender, instance, created, **kwargs):
     if created:
@@ -35,7 +49,7 @@ def award_popular_post_by_comment(sender, instance, created, **kwargs):
                 Achievement.objects.create(
                     user=post.owner,
                     title="Popular Post",
-                    description="One of your posts is trending with comments!"
+                    description="Your post is trending with comments!"
                 )
 
 # Award "Comment Champion" for users who make many comments
@@ -49,5 +63,5 @@ def award_comment_champion(sender, instance, created, **kwargs):
                 Achievement.objects.create(
                     user=user,
                     title="Comment Champion",
-                    description="You have made 20 or more comments and are an active community member!"
+                    description="You have made 2 or more comments and are an active community member!"
                 )
