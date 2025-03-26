@@ -12,6 +12,7 @@ This repository contains the API set up using Django REST Framework for the FitS
   - [Technologies Used](#technologies-used)
   - [Validation](#validation)
   - [Testing](#testing)
+  - [Deployment](#deployment)
   - [Credits](#credits)
 
 ## User Stories
@@ -214,6 +215,103 @@ Followers | Follow and unfollow users | Users can follow or unfollow other users
 The testing phase confirmed that the FitShare application meets all functional requirements and performs reliably across different scenarios. Both manual and automated tests have validated the robustness of the backend API, ensuring a secure and seamless user experience.
 
 ##### Back to [top](#table-of-contents)
+
+
+## Deployment
+
+This section provides a detailed, step-by-step guide for deploying the FitShare API backend on Heroku.
+
+### Local Setup
+
+#### Fork & Clone the Repository
+
+- **Fork the Repository:**  
+  Visit the [GitHub repository](https://github.com/yourusername/fitshare-api) and click the **Fork** button in the top-right corner.
+
+- **Clone Your Fork:**  
+  In your terminal, run:
+  ```bash
+  git clone https://github.com/yourusername/fitshare-api.git
+  cd fitshare-api
+
+#### Set Up a Virtual Environment & Install Dependencies
+
+- **Create a Virtual Environment:**
+  ```bash
+  python3 -m venv venv
+
+- **Activate the Virtual Environment:**
+  - On macOS/Linux:
+    ```bash
+    source venv/bin/activate
+    ```
+  - On Windows:
+    ```bash
+    venv\Scripts\activate
+    ```
+
+- **Install Dependencies:**
+  ```bash
+  pip install -r requirements.txt
+
+#### Run Local Migrations
+
+- **Apply Migrations:**
+  ```bash
+  python manage.py migrate
+
+- **Create a Superuser:**
+  ```bash
+  python manage.py createsuperuser
+
+### Deploying to Heroku
+
+#### Create a New Heroku App
+- Log in to your Heroku account and create a new app (e.g., `fitshareapi`).
+
+#### Configure Environment Variables
+- In the Heroku dashboard, go to **Settings > Reveal Config Vars** and set:
+  - `SECRET_KEY` – your Django secret key.
+  - `DEBUG` – set to `False` for production.
+  - `ALLOWED_HOSTS` – include your Heroku app URL (e.g., `fitshareapi.herokuapp.com`).
+  - Add any other required variables such as `CLOUDINARY_URL`.
+
+#### Add a Heroku Postgres Add-on
+- From the Heroku dashboard or CLI, add PostgreSQL:
+  ```bash
+  heroku addons:create heroku-postgresql:hobby-dev -a fitshareapi
+
+#### Create a Procfile
+- In the project root, create a file named `Procfile` containing:
+  ```makefile
+  web: gunicorn your_project_name.wsgi
+
+#### Deploy Your Code
+
+- **Commit Your Changes:**
+  ```bash
+  git add .
+  git commit -m "Add detailed deployment instructions and Procfile"
+
+- **Set Heroku as Your Remote:**
+  ```bash
+  heroku git:remote -a fitshareapi
+
+- **Push Your Code to Heroku:**
+  ```bash
+  git push heroku main
+
+#### Run Migrations on Heroku
+
+- After deployment, run:
+  ```bash
+  heroku run python manage.py migrate
+
+#### Verify Deployment
+
+- Visit [https://fitshareapi.herokuapp.com/](https://fitshareapi.herokuapp.com/) to ensure the API is live.
+
+
 
 
 ## Credits
