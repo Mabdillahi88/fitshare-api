@@ -15,4 +15,5 @@ urlpatterns = [
     path('likes/', include('likes.urls')),
     path('followers/', include('followers.urls')),
     path('achievements/', include('achievements.urls')),
+    path('notifications/', include('notifications.urls')),
 ]
