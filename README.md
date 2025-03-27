@@ -232,6 +232,27 @@ Followers | Follow and unfollow users | Users can follow or unfollow other users
     </details>
 </details>
 
+<details><summary><strong>Screenshots: Achievements</strong></summary>
+    <details><summary>Newbie Achievement</summary>
+    <img src="docs/testing/achievement-create-newbie_1.1.png" alt="Newbie achievement screenshot">
+    </details>
+    <details><summary>Newbie Achievement</summary>
+    <img src="docs/testing/achievement-create-newbie_1.2.png" alt="Newbie achievement screenshot">
+    </details>
+    <details><summary>Popular Post Achievement</summary>
+    <img src="docs/testing/achievement-create-popular_2.1.png" alt="Popular Post achievement via likes screenshot">
+    </details>
+    <details><summary>Popular Post Achievement</summary>
+    <img src="docs/testing/achievement-create-popular_2.2.png" alt="Popular Post achievement via likes screenshot">
+    </details>
+    <details><summary>Comment Champion Achievement</summary>
+    <img src="docs/testing/achievement-create-comment_champion_3.1.png" alt="Comment Champion achievement screenshot">
+    </details>
+    <details><summary>Comment Champion Achievement</summary>
+    <img src="docs/testing/achievement-create-comment_champion_3.2.png" alt="Comment Champion achievement screenshot">
+    </details>
+</details>
+
 ---
 
 ### Summary
