@@ -168,23 +168,21 @@ Comprehensive testing was conducted to ensure the robustness and reliability of 
 
 ### Manual Testing of User Stories
 
-### Manual Testing of User Stories
-
 The manual testing focused on verifying key functionalities of the application against the defined user stories. Each feature was rigorously tested for expected outcomes and edge cases.
 
-**Test** | **Action** | **Expected Result** | **Actual Result**
--------- | ------------------- | ------------------- | -----------------
-User Management | Create, update, and delete users | Admin can manage user accounts seamlessly | Works as expected
-User Permissions | Modify user permissions | Admin can update user roles and permissions | Works as expected
-Profile Management | Create, update, and delete profiles | Users can manage their profiles | Works as expected
-Post Management | Create, update, and delete posts | Users can manage posts | Works as expected
-Comment Management | Create, update, and delete comments | Users can manage comments on posts | Works as expected
-Likes | Add and remove likes | Users can like or unlike posts | Works as expected
-Followers | Follow and unfollow users | Users can follow or unfollow other users | Works as expected
-**Achievements: Newbie** | Create a new account and publish the first post | "Newbie" achievement is automatically awarded to the user | Works as expected
-**Achievements: Popular Post** | Add at least 1 like or 1 comment to a post | "Popular Post" achievement is automatically awarded to the post owner | Works as expected
-**Achievements: Comment Champion** | Post 2 or more comments | "Comment Champion" achievement is automatically awarded to the user | Works as expected
-
+| **Test**                      | **Action**                                           | **Expected Result**                                                                 | **Actual Result**         |
+|------------------------------|-------------------------------------------------------|--------------------------------------------------------------------------------------|---------------------------|
+| User Management              | Create, update, and delete users                     | Admin can manage user accounts seamlessly                                           | Works as expected         |
+| User Permissions             | Modify user permissions                               | Admin can update user roles and permissions                                         | Works as expected         |
+| Profile Management           | Create, update, and delete profiles                  | Users can manage their profiles                                                     | Works as expected         |
+| Post Management              | Create, update, and delete posts                     | Users can manage posts                                                              | Works as expected         |
+| Comment Management           | Create, update, and delete comments                  | Users can manage comments on posts                                                  | Works as expected         |
+| Likes                        | Add and remove likes                                  | Users can like or unlike posts                                                      | Works as expected         |
+| Followers                    | Follow and unfollow users                             | Users can follow or unfollow other users                                            | Works as expected         |
+| **Achievements: Newbie**     | Create a new account and publish the first post      | "Newbie" achievement is automatically awarded to the user                           | Works as expected         |
+| **Achievements: Popular Post** | Add at least 1 like or 1 comment to a post          | "Popular Post" achievement is automatically awarded to the post owner               | Works as expected         |
+| **Achievements: Comment Champion** | Post 2 or more comments                        | "Comment Champion" achievement is automatically awarded to the user                 | Works as expected         |
+| **Notifications**            | Like, comment, or follow another user's content      | A notification is automatically created for the content owner (e.g., post owner)     | Works as expected         |
 
 - **Authentication:** Only logged-in users can create, update, or delete posts, comments, likes, or follow/unfollow users.  
 - **Authorization:** Users can only modify or delete their own content, maintaining user privacy and data security.
