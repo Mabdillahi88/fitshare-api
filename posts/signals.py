@@ -4,6 +4,7 @@ from posts.models import Post
 from likes.models import Like
 from comments.models import Comment
 from achievements.models import Achievement
+from notifications.models import Notification  # Ensure your Notification model is defined
 
 # Reduced thresholds for easier testing
 POPULAR_LIKES_THRESHOLD = 1
@@ -37,6 +38,12 @@ def award_popular_post_by_like(sender, instance, created, **kwargs):
                     title="Popular Post",
                     description="Your post has received significant engagement through likes!"
                 )
+        # Create a notification for the post owner if the liker is not the owner
+        if instance.owner != post.owner:
+            Notification.objects.create(
+                recipient=post.owner,
+                message=f"{instance.owner.username} liked your post '{post.title}'."
+            )
 
 # Award "Popular Post" based on comments
 @receiver(post_save, sender=Comment)
@@ -51,6 +58,12 @@ def award_popular_post_by_comment(sender, instance, created, **kwargs):
                     title="Popular Post",
                     description="Your post is trending with comments!"
                 )
+        # Create a notification for the post owner if the commenter is not the owner
+        if instance.owner != post.owner:
+            Notification.objects.create(
+                recipient=post.owner,
+                message=f"{instance.owner.username} commented on your post '{post.title}'."
+            )
 
 # Award "Comment Champion" for users who make many comments
 @receiver(post_save, sender=Comment)
