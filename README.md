@@ -17,14 +17,17 @@ This repository contains the API set up using Django REST Framework for the FitS
 
 ## User Stories
 
-The back-end section of the FitShare project focuses on its administration side and covers one user story:
-- As an admin, I want to be able to create, edit, and delete users, posts, comments, and likes, so that I can have control over the content of the application and remove any inappropriate content.
+The back-end section of the FitShare project focuses on its administration side and covers the following user stories:
+- **Content Management:**  
+  As an admin, I want to be able to create, edit, and delete users, posts, comments, and likes, so that I can have control over the content of the application and remove any inappropriate content.
+- **Achievements Management:**  
+  As an admin, I want to monitor and manage user achievements, so that I can track user engagement and reward users for their activity on the platform.
 
 #### User Model
 
-- The User model contains information about the user. It is part of the Django allauth library.
+- The User model contains information about the user. It is part of the Django AllAuth library.
 - One-to-one relation with the Profile model owner field.
-- ForeignKey relation with the Follower model owner and followed fields.
+- ForeignKey relation with the Follower model (owner and followed fields).
 - ForeignKey relation with the Post model owner field.
 - ForeignKey relation with the Comment model owner field.
 - ForeignKey relation with the Like model owner field.
@@ -61,6 +64,21 @@ The back-end section of the FitShare project focuses on its administration side 
 - ForeignKey relation between the `owner` field and the User model `id` field.
 - ForeignKey relation between the `post` field and the Post model `id` field.
 - Unique constraint ensures a user cannot like the same post multiple times.
+
+#### Achievement Model
+
+- The Achievement model is a new custom model introduced to reward user engagement.
+- **Fields:**
+  - `user`: A ForeignKey linking the achievement to a specific User.
+  - `title`: The name of the achievement (e.g., "Newbie", "Popular Post", "Comment Champion").
+  - `description`: A short explanation of what the achievement represents.
+  - `date_earned`: A DateTimeField that automatically records when the achievement was awarded.
+- **Awarding Logic:**
+  - **Newbie:** Awarded when a user creates their first post.
+  - **Popular Post:** Awarded when a post receives at least 1 like or 1 comment (thresholds reduced for easier testing).
+  - **Comment Champion:** Awarded when a user makes 2 or more comments.
+- This model is managed automatically using Django signals, ensuring achievements are awarded based on user actions without manual intervention.
+
 
 ##### Back to [top](#table-of-contents)
 
