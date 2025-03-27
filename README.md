@@ -18,52 +18,77 @@ This repository contains the API set up using Django REST Framework for the FitS
 ## User Stories
 
 The back-end section of the FitShare project focuses on its administration side and covers the following user stories:
+
 - **Content Management:**  
   As an admin, I want to be able to create, edit, and delete users, posts, comments, and likes, so that I can have control over the content of the application and remove any inappropriate content.
+
 - **Achievements Management:**  
   As an admin, I want to monitor and manage user achievements, so that I can track user engagement and reward users for their activity on the platform.
 
+- **Notification Management:**  
+  As an admin, I want to monitor and manage user notifications, so that I can track when users interact with content (e.g., likes, comments, follows) and ensure that users receive timely feedback on their posts.
+
+---
+
 #### User Model
 
-- The User model contains information about the user. It is part of the Django AllAuth library.
-- One-to-one relation with the Profile model owner field.
-- ForeignKey relation with the Follower model (owner and followed fields).
-- ForeignKey relation with the Post model owner field.
-- ForeignKey relation with the Comment model owner field.
-- ForeignKey relation with the Like model owner field.
+- The User model contains information about the user and is part of the Django AllAuth library.
+- **Relationships:**
+  - One-to-one relation with the Profile model (via the `owner` field).
+  - ForeignKey relation with the Follower model (both `owner` and `followed` fields).
+  - ForeignKey relation with the Post model (`owner` field).
+  - ForeignKey relation with the Comment model (`owner` field).
+  - ForeignKey relation with the Like model (`owner` field).
+
+---
 
 #### Profile Model
 
 - The Profile model contains the following fields: `owner`, `name`, `content`, `created_at`, `updated_at`, and `image`.
-- One-to-one relation between the `owner` field and the User model `id` field.
-- Default profile image is used if no image is uploaded.
+- **Relationships:**
+  - One-to-one relation between the `owner` field and the User model's `id` field.
+- A default profile image is used if no image is uploaded.
+
+---
 
 #### Post Model
 
 - The Post model contains the following fields: `owner`, `created_at`, `updated_at`, `title`, `content`, `image`, and `image_filter`.
-- ForeignKey relation with the Comment model `post` field.
-- ForeignKey relation with the Like model `post` field.
+- **Relationships:**
+  - ForeignKey relation with the Comment model (`post` field).
+  - ForeignKey relation with the Like model (`post` field).
 - Includes options for image filters like `Hudson`, `Earlybird`, `Nashville`, and more.
+
+---
 
 #### Follower Model
 
 - The Follower model contains the following fields: `owner`, `followed`, and `created_at`.
-- ForeignKey relation between the `owner` field and the User model `id` field.
-- ForeignKey relation between the `followed` field and the User model `id` field.
-- Unique constraint ensures a user cannot follow the same user multiple times.
+- **Relationships:**
+  - ForeignKey relation between the `owner` field and the User model's `id` field.
+  - ForeignKey relation between the `followed` field and the User model's `id` field.
+- A unique constraint ensures a user cannot follow the same user multiple times.
+
+---
 
 #### Comment Model
 
 - The Comment model contains the following fields: `owner`, `post`, `created_at`, `updated_at`, and `content`.
-- ForeignKey relation between the `owner` field and the User model `id` field.
-- ForeignKey relation between the `post` field and the Post model `id` field.
+- **Relationships:**
+  - ForeignKey relation between the `owner` field and the User model's `id` field.
+  - ForeignKey relation between the `post` field and the Post model's `id` field.
+
+---
 
 #### Like Model
 
 - The Like model contains the following fields: `owner`, `post`, and `created_at`.
-- ForeignKey relation between the `owner` field and the User model `id` field.
-- ForeignKey relation between the `post` field and the Post model `id` field.
-- Unique constraint ensures a user cannot like the same post multiple times.
+- **Relationships:**
+  - ForeignKey relation between the `owner` field and the User model's `id` field.
+  - ForeignKey relation between the `post` field and the Post model's `id` field.
+- A unique constraint ensures a user cannot like the same post multiple times.
+
+---
 
 #### Achievement Model
 
@@ -78,6 +103,21 @@ The back-end section of the FitShare project focuses on its administration side 
   - **Popular Post:** Awarded when a post receives at least 1 like or 1 comment (thresholds reduced for easier testing).
   - **Comment Champion:** Awarded when a user makes 2 or more comments.
 - This model is managed automatically using Django signals, ensuring achievements are awarded based on user actions without manual intervention.
+
+---
+
+#### Notification Model
+
+- The Notification model is a new custom model introduced to track user interactions.
+- **Fields:**
+  - `recipient`: A ForeignKey linking the notification to a specific User who receives the notification.
+  - `message`: A short message detailing the interaction (e.g., "UserX liked your post 'Title'").
+  - `is_read`: A Boolean field indicating whether the notification has been read.
+  - `created_at`: A DateTimeField that automatically records when the notification was created.
+- **Usage:**
+  - Notifications are automatically generated using Django signals when users interact with content (such as likes, comments, or follows).
+  - This ensures that users receive timely feedback on their posts and admins can monitor these interactions.
+
 
 
 ##### Back to [top](#table-of-contents)
