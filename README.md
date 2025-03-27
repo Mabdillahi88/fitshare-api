@@ -291,6 +291,11 @@ The manual testing focused on verifying key functionalities of the application a
     </details>
 </details>
 
+<details><summary><strong>Screenshots: Notifications (Admin View)</strong></summary>
+   <details><summary>All Notifications</summary>
+    <img src="docs/testing/notification1.1.png" alt="Admin view of notifications">
+  </details>
+</details>
 ---
 
 ### Summary
