@@ -329,10 +329,7 @@ This section provides a detailed, step-by-step guide for deploying the FitShare 
   python3 -m venv venv
 
 - **Activate the Virtual Environment:**
-  - On macOS/Linux:
-    ```bash
-    source venv/bin/activate
-    ```
+
   - On Windows:
     ```bash
     venv\Scripts\activate
@@ -354,8 +351,17 @@ This section provides a detailed, step-by-step guide for deploying the FitShare 
 
 ### Deploying to Heroku
 
-#### Create a New Heroku App
+
+#### Login to Heroku and Create a New Heroku App
 - Log in to your Heroku account and create a new app (e.g., `fitshareapi`).
+
+  <details><summary>Login to Heroku</summary>
+    <img src="docs/testing/create_login_account.png" alt="Login to Heroku">
+  </details>
+
+  <details><summary>Create app</summary>
+    <img src="docs/testing/create_new_app.png" alt="Create app">
+  </details>
 
 #### Configure Environment Variables
 - In the Heroku dashboard, go to **Settings > Reveal Config Vars** and set:
@@ -364,15 +370,63 @@ This section provides a detailed, step-by-step guide for deploying the FitShare 
   - `ALLOWED_HOSTS` – include your Heroku app URL (e.g., `fitshareapi.herokuapp.com`).
   - Add any other required variables such as `CLOUDINARY_URL`.
 
+    <details><summary>Config Vars</summary>
+    <img src="docs/testing/create_confiq_vars.png" alt="Config Vars">
+  </details>
+
 #### Add a Heroku Postgres Add-on
 - From the Heroku dashboard or CLI, add PostgreSQL:
   ```bash
   heroku addons:create heroku-postgresql:hobby-dev -a fitshareapi
 
+
+#### Install requirements
+
+ - Run pip3 freeze > requirements.txt so both are added to the requirements.txt file
+
+<details><summary>Install requirements</summary>
+    <img src="docs/testing/set_up_procfile_.png" alt="Install requirements">
+  </details>
+
 #### Create a Procfile
 - In the project root, create a file named `Procfile` containing:
   ```makefile
   web: gunicorn your_project_name.wsgi
+
+<details><summary>Create a Procfile</summary>
+    <img src="docs/testing/set_up_procfile_.png" alt="Create a Procfile">
+  </details>
+  
+#### Set up database
+
+  In your settings.py, set up the DATABASES configuration to directly connect to your Heroku Postgres database.
+
+<details><summary>Set up database</summary>
+    <img src="docs/testing/set_up_database.png" alt="Set up database">
+  </details>
+
+#### Debug
+
+  In your settings.py, make sure that DEBUG is disabled for production
+
+  <details><summary>Debug</summary>
+    <img src="docs/testing/settings_debug.png" alt="Debug">
+  </details>
+
+#### Connect to Heroku
+
+**Connect the App to GitHub and Enable Automatic Deploys:**
+
+1. Log in to your Heroku Dashboard and select your app.
+2. Go to the **Deploy** tab.
+3. Under **Deployment method**, select **GitHub**.
+4. Search for your repository (e.g., `Mabdillahi88/fitshare`) and click **Connect**.
+5. Once connected, click **Enable Automatic Deploys** to allow Heroku to deploy your app automatically whenever changes are pushed to the GitHub repository.
+
+<details><summary>Connect to Heroku</summary>
+    <img src="docs/testing/connect_heroku_github.png" alt="Connect to Heroku">
+  </details>
+
 
 #### Deploy Your Code
 

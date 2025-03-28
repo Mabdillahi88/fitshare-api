@@ -20,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('SECRET_KEY', 'unsafe-default-secret-key')
 
 # Enable DEBUG mode based on environment
-DEBUG = True
+DEBUG = False
 
 # Hosts and dynamic Gitpod workspace handling
 ALLOWED_HOSTS = [
