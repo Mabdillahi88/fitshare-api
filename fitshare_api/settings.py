@@ -27,7 +27,8 @@ ALLOWED_HOSTS = [
     os.environ.get('ALLOWED_HOST'),
     'localhost',
     '127.0.0.1',
-    'https://fitshare-d428ae7f1a9f.herokuapp.com',  # Replace with deployed URL
+    'fitshare-api.onrender.com',  # Render backend URL
+    'https://fitshare-d428ae7f1a9f.herokuapp.com',  # Keep for backward compatibility
     '8000-mabdillahi8-fitshareapi-ageqqbs7o91.ws.codeinstitute-ide.net',  # Gitpod workspace
     'mabdillahi8-fitshareapi-ageqqbs7o91.ws.codeinstitute-ide.net',
 ]
@@ -42,8 +43,10 @@ print("ALLOWED_HOSTS:", ALLOWED_HOSTS)
 
 # CSRF Trusted Origins
 CSRF_TRUSTED_ORIGINS = [
-    'https://fitshare-d428ae7f1a9f.herokuapp.com',  # Replace with deployed URL
+    'https://fitshare.onrender.com',  # Render frontend URL
+    'https://fitshare-d428ae7f1a9f.herokuapp.com',  # Keep for backward compatibility
     'http://127.0.0.1:8000',  # Local development
+    'http://localhost:3000',  # Local frontend development
     'https://8000-mabdillahi8-fitshareapi-ageqqbs7o91.ws.codeinstitute-ide.net',
     'https://mabdillahi8-fitshareapi-ageqqbs7o91.ws.codeinstitute-ide.net',
 ]
@@ -55,7 +58,10 @@ if 'GITPOD_WORKSPACE_URL' in os.environ:
 
 # CORS Allowed Origins
 CORS_ALLOWED_ORIGINS = [
-    'https://fitshare-d428ae7f1a9f.herokuapp.com',  # Replace with deployed URL
+    'https://fitshare.onrender.com',  # Render frontend URL
+    'https://fitshare-d428ae7f1a9f.herokuapp.com',  # Keep for backward compatibility
+    'http://localhost:3000',  # Local frontend development
+    'http://127.0.0.1:3000',  # Alternative local frontend
     'https://8000-mabdillahi8-fitshareapi-ageqqbs7o91.ws.codeinstitute-ide.net',
     'https://mabdillahi8-fitshareapi-ageqqbs7o91.ws.codeinstitute-ide.net',
 ]
