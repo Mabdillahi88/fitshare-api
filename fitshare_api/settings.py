@@ -28,7 +28,7 @@ ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
     'fitshare-api.onrender.com',  # Render backend URL
-    'https://fitshare-d428ae7f1a9f.herokuapp.com',  # Keep for backward compatibility
+    'fitshare-d428ae7f1a9f.herokuapp.com',  # Keep for backward compatibility
     '8000-mabdillahi8-fitshareapi-ageqqbs7o91.ws.codeinstitute-ide.net',  # Gitpod workspace
     'mabdillahi8-fitshareapi-ageqqbs7o91.ws.codeinstitute-ide.net',
 ]
