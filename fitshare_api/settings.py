@@ -43,7 +43,7 @@ print("ALLOWED_HOSTS:", ALLOWED_HOSTS)
 
 # CSRF Trusted Origins
 CSRF_TRUSTED_ORIGINS = [
-    'https://fitshare.onrender.com',  # Render frontend URL
+    'https://fitshare-v0lk.onrender.com',  # Render frontend URL (actual)
     'https://fitshare-d428ae7f1a9f.herokuapp.com',  # Keep for backward compatibility
     'http://127.0.0.1:8000',  # Local development
     'http://localhost:3000',  # Local frontend development
@@ -58,7 +58,7 @@ if 'GITPOD_WORKSPACE_URL' in os.environ:
 
 # CORS Allowed Origins
 CORS_ALLOWED_ORIGINS = [
-    'https://fitshare.onrender.com',  # Render frontend URL
+    'https://fitshare-v0lk.onrender.com',  # Render frontend URL (actual)
     'https://fitshare-d428ae7f1a9f.herokuapp.com',  # Keep for backward compatibility
     'http://localhost:3000',  # Local frontend development
     'http://127.0.0.1:3000',  # Alternative local frontend
