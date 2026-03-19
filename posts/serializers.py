@@ -7,9 +7,7 @@ class PostSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.username')
     is_owner = serializers.SerializerMethodField()
     profile_id = serializers.ReadOnlyField(source='owner.profile.id')
-    profile_image = serializers.ReadOnlyField(
-        source='owner.profile.image.url'
-    )
+    profile_image = serializers.SerializerMethodField()
     like_id = serializers.SerializerMethodField()
     comments_count = serializers.ReadOnlyField()
     likes_count = serializers.ReadOnlyField()
@@ -32,6 +30,15 @@ class PostSerializer(serializers.ModelSerializer):
     def get_is_owner(self, obj):
         request = self.context['request']
         return request.user == obj.owner
+
+    def get_profile_image(self, obj):
+        """Safely return profile image URL."""
+        try:
+            if obj.owner.profile.image:
+                return obj.owner.profile.image.url
+        except (AttributeError, ValueError):
+            pass
+        return None
 
     def get_like_id(self, obj):
         user = self.context['request'].user
